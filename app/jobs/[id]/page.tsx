@@ -55,6 +55,7 @@ import {
     mergeDonationWizardSnapshotIntoClaudeOutput,
     resolveDonationEvaluations,
     getDonationWizardSnapshot,
+    composeBackstoryFromPageEval,
 } from "@/src/lib/donationWizard";
 import {
     parseValidateAndNormalizeClaudeAds,
@@ -246,12 +247,33 @@ async function evaluateDonationStory(formData: FormData) {
     "use server";
 
     const jobId = formData.get("jobId")?.toString();
-    const backstory = String(formData.get("backstory") || "").trim();
+    const backstoryFromForm = String(formData.get("backstory") || "").trim();
     if (!jobId) throw new Error("Missing jobId");
-    if (!backstory) throw new Error("Backstory is required.");
 
     const job = await prisma.job.findUnique({ where: { id: jobId } });
     if (!job) throw new Error("Job not found");
+
+    const dwSnap = getDonationWizardSnapshot(job.claudeOutput);
+    const { pageEvaluation } = resolveDonationEvaluations(job);
+    const rawText = String(job.rawText || "").trim();
+    const composedFromPage = composeBackstoryFromPageEval(
+        pageEvaluation,
+        rawText
+    ).trim();
+
+    const backstory =
+        backstoryFromForm ||
+        String(job.backstory_summary || "").trim() ||
+        String(dwSnap?.backstorySummary || "").trim() ||
+        composedFromPage;
+
+    if (!backstory.trim()) {
+        redirect(
+            `/jobs/${jobId}?${new URLSearchParams({
+                [STORY_EVAL_ERROR_QUERY_KEY]: "need_backstory",
+            }).toString()}`
+        );
+    }
 
     const evalResult = await evaluateDonationBackstory({
         campaignType: job.campaign_type || "FAMILY CRISIS",
@@ -628,6 +650,7 @@ async function generateFundraiserFiveAds(formData: FormData) {
     redirect(`/jobs/${jobId}`);
 }
 
+const STORY_EVAL_ERROR_QUERY_KEY = "storyEvalError";
 const FRESH_BATCH_QUERY_KEY = "freshBatch";
 const FRESH_BATCH_PARTIAL_QUERY_KEY = "freshBatchPartial";
 const FRESH_BATCH_ERROR_QUERY_KEY = "freshBatchError";
@@ -1116,6 +1139,18 @@ export default async function JobDetailPage({
               ? freshErrRaw[0]
               : undefined;
 
+    const storyEvalErrRaw = sp[STORY_EVAL_ERROR_QUERY_KEY];
+    const storyEvalErrorCode =
+        typeof storyEvalErrRaw === "string"
+            ? storyEvalErrRaw
+            : Array.isArray(storyEvalErrRaw)
+              ? storyEvalErrRaw[0] ?? ""
+              : "";
+    const storyEvalErrorMessage =
+        storyEvalErrorCode === "need_backstory"
+            ? "Add a backstory in the text box (or edit the draft we pre-filled). If the box is empty, click Analyze Fundraiser again so we can pull text from the fundraiser page, then try Evaluate Story."
+            : "";
+
     const job = await prisma.job.findUnique({
         where: { id },
         include: {
@@ -1195,7 +1230,11 @@ export default async function JobDetailPage({
         job.campaignType === "donation"
             ? (
                   (job.backstory_summary || "").trim() ||
-                  String(dwSnap?.backstorySummary || "").trim()
+                  String(dwSnap?.backstorySummary || "").trim() ||
+                  composeBackstoryFromPageEval(
+                      donationPageEval,
+                      (job.rawText || "").trim()
+                  ).trim()
               )
             : "";
 
@@ -1349,6 +1388,50 @@ export default async function JobDetailPage({
                         }}
                     >
                         {variationErrorMessage}
+                    </div>
+                    <Link
+                        href={`/jobs/${id}`}
+                        style={{
+                            display: "inline-block",
+                            marginTop: 12,
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: "var(--accent)",
+                        }}
+                    >
+                        Dismiss
+                    </Link>
+                </div>
+            ) : null}
+
+            {storyEvalErrorMessage ? (
+                <div
+                    style={{
+                        marginTop: 16,
+                        padding: 14,
+                        borderRadius: 14,
+                        border: "1px solid #b45309",
+                        background: "rgba(180, 83, 9, 0.08)",
+                    }}
+                >
+                    <div
+                        style={{
+                            fontWeight: 900,
+                            marginBottom: 8,
+                            color: "#b45309",
+                        }}
+                    >
+                        Story evaluation needs a backstory
+                    </div>
+                    <div
+                        style={{
+                            fontSize: 13,
+                            lineHeight: 1.5,
+                            whiteSpace: "pre-wrap",
+                            wordBreak: "break-word",
+                        }}
+                    >
+                        {storyEvalErrorMessage}
                     </div>
                     <Link
                         href={`/jobs/${id}`}

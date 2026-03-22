@@ -6,7 +6,8 @@
     "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "postbuild": "node scripts/prepare-standalone.mjs",
+    "start": "node .next/standalone/server.js",
     "db:migrate": "prisma migrate deploy",
     "lint": "eslint",
     "test": "vitest run"

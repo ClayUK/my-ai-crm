@@ -22,7 +22,8 @@ At server startup, missing `DATABASE_URL` / `ANTHROPIC_API_KEY` / `KIE_API_KEY` 
    `npx prisma migrate deploy`  
    (or add a Railway **Release** phase with that command; keep `npm run start` for the web process.)
 3. Ensure `ANTHROPIC_API_KEY` and `KIE_API_KEY` are set on the same service as the Next app.
-4. Build: `npm run build` (postinstall runs `prisma generate`). Start: `npm run start` (uses `PORT`).
+4. Build: `npm run build` (postinstall runs `prisma generate`; **postbuild** copies `public` and `.next/static` into `.next/standalone` for static assets).
+5. Start: `npm run start` runs **`node .next/standalone/server.js`** (Next `output: "standalone"`). Railway sets `PORT` automatically. If the service does not accept external traffic, set **`HOSTNAME=0.0.0.0`** on the service (some hosts require it).
 
 If you later use a **pooled** URL with PgBouncer (transaction mode), add a non-pooled `DIRECT_DATABASE_URL` and Prisma’s `directUrl` in `schema.prisma` per [Prisma docs](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#external-connection-poolers).
 

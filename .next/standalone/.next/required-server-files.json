@@ -297,8 +297,7 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "serverExternalPackages": [
-      "@prisma/client",
-      "prisma"
+      "@prisma/client"
     ],
     "turbopack": {
       "root": "/Users/daviddielman/my-ai-crm"
