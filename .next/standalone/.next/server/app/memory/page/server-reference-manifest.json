@@ -1,0 +1,20 @@
+{
+  "node": {
+    "40b92861b339da171250b52a808f1dfaa6613a3fe0": {
+      "workers": {
+        "app/memory/page": {
+          "moduleId": 40594,
+          "async": false,
+          "exportedName": "saveFundraiserCreativeBrain",
+          "filename": "app/memory/actions.ts"
+        }
+      },
+      "layer": {
+        "app/memory/page": "action-browser"
+      },
+      "exportedName": "saveFundraiserCreativeBrain",
+      "filename": "app/memory/actions.ts"
+    }
+  },
+  "edge": {}
+}
