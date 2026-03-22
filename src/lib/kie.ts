@@ -1,10 +1,23 @@
-const KIE_API_BASE = "https://api.kie.ai";
-const KIE_UPLOAD_BASE = "https://kieai.redpandaai.co";
+/** Override in production if Kie provides region-specific or proxy endpoints. */
+function kieApiBase() {
+    return (
+        process.env.KIE_API_BASE?.trim() || "https://api.kie.ai"
+    ).replace(/\/$/, "");
+}
+
+function kieUploadBase() {
+    return (
+        process.env.KIE_UPLOAD_BASE?.trim() ||
+        "https://kieai.redpandaai.co"
+    ).replace(/\/$/, "");
+}
 
 function getKieApiKey() {
-    const key = process.env.KIE_API_KEY;
+    const key = process.env.KIE_API_KEY?.trim();
     if (!key) {
-        throw new Error("Missing KIE_API_KEY in .env");
+        throw new Error(
+            "KIE_API_KEY is not set. Add it to environment variables (e.g. Railway)."
+        );
     }
     return key;
 }
@@ -35,7 +48,7 @@ export async function uploadReferenceFilesToKie(files: File[]) {
         form.set("uploadPath", "images/user-uploads");
         form.set("fileName", fileName);
 
-        const res = await fetch(`${KIE_UPLOAD_BASE}/api/file-stream-upload`, {
+        const res = await fetch(`${kieUploadBase()}/api/file-stream-upload`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${apiKey}`,
@@ -66,7 +79,7 @@ export async function generateImageWithKie(
 ) {
     const apiKey = getKieApiKey();
 
-    const createRes = await fetch(`${KIE_API_BASE}/api/v1/jobs/createTask`, {
+    const createRes = await fetch(`${kieApiBase()}/api/v1/jobs/createTask`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${apiKey}`,
@@ -99,7 +112,7 @@ export async function generateImageWithKie(
         await sleep(3000);
 
         const statusRes = await fetch(
-            `${KIE_API_BASE}/api/v1/jobs/recordInfo?taskId=${encodeURIComponent(taskId)}`,
+            `${kieApiBase()}/api/v1/jobs/recordInfo?taskId=${encodeURIComponent(taskId)}`,
             {
                 method: "GET",
                 headers: {

@@ -4,8 +4,17 @@ const globalForPrisma = globalThis as unknown as {
     prisma: PrismaClient | undefined;
 };
 
+/**
+ * Single shared client per Node process (dev HMR + production workers).
+ * Omitting the global in production can multiply connections across hot reloads.
+ */
 export const prisma =
     globalForPrisma.prisma ??
-    new PrismaClient();
+    new PrismaClient({
+        log:
+            process.env.NODE_ENV === "development"
+                ? ["error", "warn"]
+                : ["error"],
+    });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+globalForPrisma.prisma = prisma;

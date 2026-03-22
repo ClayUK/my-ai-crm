@@ -439,10 +439,6 @@
     display: inline-flex;
   }
 
-  .table {
-    display: table;
-  }
-
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;

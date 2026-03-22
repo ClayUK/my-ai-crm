@@ -2,12 +2,38 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Environment
 
-- `ANTHROPIC_API_KEY` — required for Claude.
-- **Fundraiser “Generate 5 ads”** (`generateDonationFundraiserBatchFive`): **extended thinking is on by default** (Haiku 4.5). Optional overrides:
-  - `ANTHROPIC_FUNDRAISER_BATCH_THINKING=false` — disable thinking (legacy-style call, `max_tokens` 9000).
-  - `ANTHROPIC_FUNDRAISER_BATCH_MODEL` — e.g. `claude-sonnet-4-5-20250929` for heavier reasoning.
-  - `ANTHROPIC_FUNDRAISER_BATCH_THINKING_BUDGET` — thinking budget in tokens (min `1024`, default `10000`).
-  - `ANTHROPIC_FUNDRAISER_BATCH_MAX_TOKENS` — total output cap (default scales with budget; must exceed thinking budget).
+Copy `.env.example` to `.env` and fill in values. Required for full functionality:
+
+- `DATABASE_URL` — **PostgreSQL** connection string (use `?sslmode=require` on Railway and most cloud hosts).
+- `ANTHROPIC_API_KEY` — Claude / Anthropic.
+- `KIE_API_KEY` — Kie image API.
+
+Optional:
+
+- `KIE_API_BASE`, `KIE_UPLOAD_BASE` — defaults are Kie’s public URLs; override only if needed.
+- `SERVER_ACTIONS_ALLOWED_ORIGINS` — comma-separated origins if Server Actions fail with CSRF/origin errors when using **multiple public URLs** (e.g. Railway default hostname + custom domain). Set this on your **build** environment to match.
+
+At server startup, missing `DATABASE_URL` / `ANTHROPIC_API_KEY` / `KIE_API_KEY` are logged (see `instrumentation.ts`).
+
+### Railway (PostgreSQL)
+
+1. Add a **PostgreSQL** plugin and copy `DATABASE_URL` into the **web** service variables (Railway often appends SSL params automatically).
+2. **Release / deploy command** (before or as part of start): run migrations once per deploy, e.g.  
+   `npx prisma migrate deploy`  
+   (or add a Railway **Release** phase with that command; keep `npm run start` for the web process.)
+3. Ensure `ANTHROPIC_API_KEY` and `KIE_API_KEY` are set on the same service as the Next app.
+4. Build: `npm run build` (postinstall runs `prisma generate`). Start: `npm run start` (uses `PORT`).
+
+If you later use a **pooled** URL with PgBouncer (transaction mode), add a non-pooled `DIRECT_DATABASE_URL` and Prisma’s `directUrl` in `schema.prisma` per [Prisma docs](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#external-connection-poolers).
+
+### Fundraiser batch (Claude) tuning
+
+**Fundraiser “Generate 5 ads”** (`generateDonationFundraiserBatchFive`): **extended thinking is on by default** (Haiku 4.5). Optional overrides:
+
+- `ANTHROPIC_FUNDRAISER_BATCH_THINKING=false` — disable thinking (legacy-style call, `max_tokens` 9000).
+- `ANTHROPIC_FUNDRAISER_BATCH_MODEL` — e.g. `claude-sonnet-4-5-20250929` for heavier reasoning.
+- `ANTHROPIC_FUNDRAISER_BATCH_THINKING_BUDGET` — thinking budget in tokens (min `1024`, default `10000`).
+- `ANTHROPIC_FUNDRAISER_BATCH_MAX_TOKENS` — total output cap (default scales with budget; must exceed thinking budget).
 
 ## Getting Started
 

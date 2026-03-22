@@ -3,18 +3,32 @@ import type { Message } from "@anthropic-ai/sdk/resources/messages/messages";
 import { prisma } from "@/src/lib/prisma";
 import { extractJsonObject, normalizeRequestedAdCount } from "@/src/lib/claudeAds";
 
-export const anthropic = new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY,
-});
+let anthropicSingleton: Anthropic | undefined;
+
+/** Lazy init so `ANTHROPIC_API_KEY` is read at request time (Railway/prod env), not only at cold import. */
+export function getAnthropic(): Anthropic {
+    if (!anthropicSingleton) {
+        const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
+        if (!apiKey) {
+            throw new Error(
+                "ANTHROPIC_API_KEY is not set. Add it in your host environment (e.g. Railway Variables)."
+            );
+        }
+        anthropicSingleton = new Anthropic({ apiKey });
+    }
+    return anthropicSingleton;
+}
 
 /** Above ~21.3k the TS SDK refuses non-streaming requests (estimated wall time > 10 min). */
 const ANTHROPIC_NONSTREAMING_MAX_TOKENS_CAP = 21_000;
 
-type MessagesCreateParams = Parameters<typeof anthropic.messages.create>[0];
+type MessagesCreateParams = Parameters<Anthropic["messages"]["create"]>[0];
 
 function streamMessagesBody(body: MessagesCreateParams) {
-    return anthropic.messages.stream({
-        ...(body as unknown as Parameters<typeof anthropic.messages.stream>[0]),
+    return getAnthropic().messages.stream({
+        ...(body as unknown as Parameters<
+            Anthropic["messages"]["stream"]
+        >[0]),
         stream: true,
     });
 }
@@ -39,7 +53,7 @@ async function messagesCreateLongRequestSafe(
     }
 
     try {
-        const res = await anthropic.messages.create(body);
+        const res = await getAnthropic().messages.create(body);
         return res as Message;
     } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
@@ -817,7 +831,7 @@ ${rawText}
 ${outputContractBlock}
 `;
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 6000,
         messages: [
@@ -853,7 +867,7 @@ Here is your prior JSON to expand (do not change the schema):
 ${initialText}
 `;
 
-        const expanded = await anthropic.messages.create({
+        const expanded = await getAnthropic().messages.create({
             model: "claude-haiku-4-5",
             max_tokens: 6000,
             messages: [
@@ -1002,7 +1016,7 @@ export async function evaluateDonationBackstory(input: {
         "- emotionalAnglesToUse are 3 distinct angle phrases for generating ad hooks.",
     ].join("\n");
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 900,
         messages: [{ role: "user", content: prompt }],
@@ -1050,7 +1064,7 @@ export async function evaluateDonationPageFromScrape(input: {
         JSON.stringify(schemaObj, null, 2),
     ].join("\n");
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 1200,
         messages: [{ role: "user", content: prompt }],
@@ -1114,7 +1128,7 @@ export async function evaluateDonationReferences(input: {
         "- likenessPreservationNotes must emphasize what must be matched in Kie output.",
     ].join("\n");
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 1000,
         messages: [{ role: "user", content: prompt }],
@@ -1335,7 +1349,7 @@ Rules:
 - visualPrompt must already contain the final text overlay instruction content if included.
 `;
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 2500,
         messages: [{ role: "user", content: prompt }],
@@ -1380,7 +1394,7 @@ ${JSON.stringify(imageUrls)}
 ${buildRejectionTail()}
 `;
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 2500,
         messages: [{ role: "user", content: prompt }],
@@ -1453,7 +1467,7 @@ export async function evaluateDonationBackstory(input: {
         "- emotionalAnglesToUse are 3 distinct angle phrases for generating ad hooks.",
     ].join("\n");
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 900,
         messages: [{ role: "user", content: prompt }],
@@ -1502,7 +1516,7 @@ export async function evaluateDonationPageFromScrape(input: {
         JSON.stringify(schemaObj, null, 2),
     ].join("\n");
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 1200,
         messages: [{ role: "user", content: prompt }],
@@ -1564,7 +1578,7 @@ export async function evaluateDonationReferences(input: {
         "- likenessPreservationNotes must emphasize what must be matched in Kie output.",
     ].join("\n");
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 1000,
         messages: [{ role: "user", content: prompt }],
@@ -1731,7 +1745,7 @@ export async function generateDonationSingleAdPrompt(input: {
         JSON.stringify(schema, null, 2),
     ].join("\n");
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 2200,
         messages: [{ role: "user", content: prompt }],
@@ -2293,7 +2307,7 @@ ${experimentalAdsRulesBlock}
 ${buildRejectionTail()}
 `;
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 6000,
         messages: [{ role: "user", content: prompt }],
@@ -2756,7 +2770,7 @@ ${contractTail}
 ${selfCheckPassBlock}
 `;
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: maxTokens,
         messages: [{ role: "user", content: prompt }],
@@ -3026,7 +3040,7 @@ ${selfCheckVariationsBlock}
         return getFirstTextOrThrow(response);
     }
 
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
         model: "claude-haiku-4-5",
         max_tokens: 5000,
         messages: [{ role: "user", content: prompt }],
