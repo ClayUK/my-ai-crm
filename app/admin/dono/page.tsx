@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic"
-export const dynamic = 'force-dynamic'
 import Link from "next/link";
 import { prisma } from "@/src/lib/prisma";
 import { seedDefaultMemory } from "@/src/lib/defaultMemory";
