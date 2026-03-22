@@ -1,65 +1,145 @@
-import Image from "next/image";
+import Link from "next/link";
+import { prisma } from "@/src/lib/prisma";
+import { redirect } from "next/navigation";
+import JobBulkDeleteSelect from "./components/JobBulkDeleteSelect";
 
-export default function Home() {
+async function deleteSelectedJobs(formData: FormData) {
+  "use server";
+
+  const jobIds = formData
+    .getAll("jobIds")
+    .map((v) => String(v))
+    .filter(Boolean);
+
+  if (jobIds.length === 0) return;
+
+  const ads = await prisma.ad.findMany({
+    where: { jobId: { in: jobIds } },
+    select: { id: true },
+  });
+
+  const adIds = ads.map((a) => a.id);
+
+  // Delete children first to avoid FK constraint issues.
+  if (adIds.length > 0) {
+    await prisma.image.deleteMany({
+      where: { adId: { in: adIds } },
+    });
+  }
+
+  await prisma.referenceAsset.deleteMany({
+    where: { jobId: { in: jobIds } },
+  });
+
+  await prisma.ad.deleteMany({
+    where: { jobId: { in: jobIds } },
+  });
+
+  await prisma.job.deleteMany({
+    where: { id: { in: jobIds } },
+  });
+
+  // Keep the UI simple after delete.
+  redirect("/");
+}
+
+export default async function HomePage() {
+  const jobs = await prisma.job.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div>
+      <div style={{ marginBottom: 16 }}>
+        <h1 style={{ margin: 0, fontSize: 26, fontWeight: 900 }}>
+          Campaigns
+        </h1>
+        <div style={{ marginTop: 6, opacity: 0.75, fontSize: 13 }}>
+          Fundraiser URL → evaluate → prompts → Kie images.
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        <div style={{ marginTop: 14 }}>
+          <Link
+            href="/new"
+            style={{
+              display: "inline-block",
+              padding: "10px 14px",
+              borderRadius: 12,
+              border: "1px solid rgba(124, 58, 237, 0.35)",
+              background: "var(--accent)",
+              color: "#fff",
+              textDecoration: "none",
+              fontSize: 13,
+              fontWeight: 700,
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Create Campaign
+          </Link>
         </div>
-      </main>
+      </div>
+
+      <div
+        style={{
+          border: "1px solid var(--border)",
+          borderRadius: 16,
+          padding: 16,
+          background: "var(--surface)",
+        }}
+      >
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center" }}>
+          <div>
+            <div style={{ fontWeight: 900 }}>Recent Campaigns</div>
+            <div style={{ marginTop: 4, fontSize: 13, opacity: 0.75, color: "var(--textMuted)" }}>
+              Delete old campaigns when you are done.
+            </div>
+          </div>
+          {jobs.length > 0 ? (
+            <div style={{ fontSize: 12, opacity: 0.65, color: "var(--textMuted)" }}>{jobs.length} total</div>
+          ) : null}
+        </div>
+
+        <div style={{ marginTop: 14 }}>
+          {jobs.length === 0 ? (
+            <div style={{ opacity: 0.8, fontSize: 13, color: "var(--textMuted)" }}>
+              No campaigns yet. Create your first one to generate ad tabs.
+            </div>
+          ) : (
+            <form action={deleteSelectedJobs}>
+              <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 10, color: "var(--textMuted)" }}>
+                Tip: improve output quality by adding/updating memory in the Memory page.
+              </div>
+
+              <JobBulkDeleteSelect
+                jobs={jobs.map((j) => ({
+                  id: j.id,
+                  url: j.url,
+                  status: j.status,
+                }))}
+              />
+
+              <div style={{ marginTop: 12 }}>
+                <button
+                  type="submit"
+                  style={{
+                    padding: "10px 14px",
+                    borderRadius: 12,
+                    border: "1px solid rgba(239, 68, 68, 0.45)",
+                    background: "rgba(239, 68, 68, 0.14)",
+                    color: "#fff",
+                    cursor: "pointer",
+                    fontSize: 13,
+                    fontWeight: 700,
+                  }}
+                >
+                  Delete Selected
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

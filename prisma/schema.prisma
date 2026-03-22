@@ -1,0 +1,300 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Job {
+  id                  String           @id @default(cuid())
+  url                 String
+  status              String           @default("pending")
+  campaignType        String           @default("product")
+
+  rawText             String?
+  claudeOutput        String?
+  kieResult           String?
+
+  platform            String?
+  funnelStage         String?
+  formatRatio         String?
+  primaryAngles       String?
+  testimonialUsage    String?
+  ctaStyle            String?
+  visualStyle         String?
+  numberOfAds         String?
+  referenceImageTypes String?
+  creativeMode       String?
+  adMixStrategy     String?
+  strictlyFollowSelectedAngles Boolean? @default(false)
+  includeExperimentalAds       Boolean? @default(false)
+
+  // Donation-only subject + template inputs (ignored for product jobs)
+  campaign_type               String?
+  subject_name                String?
+  subject_type                String?
+  species_breed_age          String?
+  physical_description       String?
+  injury_or_medical_details  String?
+  backstory_summary          String?
+  urgency_level              String?
+  fundraiser_goal_amount     String?
+  emotional_hook             String?
+  companion_or_family_detail String?
+  before_detail              String?
+  selected_templates         String?
+
+  // Donation-only: lightweight sequential evaluations
+  donationPageEvaluation      String?
+  donationBackstoryEvaluation String?
+  donationReferenceEvaluation String?
+
+  /// JSON: cumulative summaries from "Generate 5 ads" batches (hooks, templates, angles) to reduce repeats
+  fundraiserBatchHistory        String?
+
+  ads                 Ad[]
+  referenceAssets     ReferenceAsset[]
+
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+}
+
+model Ad {
+  id              String           @id @default(cuid())
+  jobId           String
+  adNumber        Int
+  title           String?
+  sourceBlock     String?
+  editedPrompt    String?
+  kieResult       String?
+  status          String           @default("pending")
+  parentAdId      String?
+  isWinner        Boolean          @default(false)
+
+  job             Job              @relation(fields: [jobId], references: [id])
+  images          Image[]
+  referenceAssets ReferenceAsset[]
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@unique([jobId, adNumber])
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  adId      String
+  url       String
+  prompt    String?
+
+  ad        Ad       @relation(fields: [adId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model ReferenceAsset {
+  id           String   @id @default(cuid())
+  jobId        String
+  adId         String?
+  filePath     String
+  originalName String
+  mimeType     String?
+  // Donation-only: user-provided per-image description.
+  description  String?
+
+  job          Job      @relation(fields: [jobId], references: [id])
+  ad           Ad?      @relation(fields: [adId], references: [id])
+
+  createdAt    DateTime @default(now())
+}
+
+model SwipeCategory {
+  id          String       @id @default(cuid())
+  name        String
+  marketType  String       @default("product")
+  description String?
+  entries     SwipeEntry[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([name, marketType])
+}
+
+model SwipeEntry {
+  id               String        @id @default(cuid())
+  title            String
+  marketType       String        @default("product")
+  categoryId       String
+  status           String        @default("active")
+
+  hook             String?
+  angle            String?
+  concept          String?
+  copy             String?
+  cta              String?
+  visualDirection  String?
+  audience         String?
+  platform         String?
+  funnelStage      String?
+  offerType        String?
+  emotionalTrigger String?
+  objectionHandled String?
+  whyItWorks       String?
+  source           String?
+  tags             String?
+  notes            String?
+  performanceScore Int?
+  usageCount       Int           @default(0)
+
+  category         SwipeCategory @relation(fields: [categoryId], references: [id])
+
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model ConceptFramework {
+  id                 String   @id @default(cuid())
+  name               String
+  marketType         String   @default("product")
+  status             String   @default("active")
+
+  frameworkType      String?
+  summary            String?
+  structure          String?
+  promptInstructions String?
+  bestUseCases       String?
+  badUseCases        String?
+  examples           String?
+  tags               String?
+  notes              String?
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([name, marketType])
+}
+
+model AudienceInsight {
+  id               String   @id @default(cuid())
+  name             String
+  marketType       String   @default("product")
+  segmentType      String?
+  demographics     String?
+  psychographics   String?
+  painPoints       String?
+  desires          String?
+  fears            String?
+  objections       String?
+  buyingTriggers   String?
+  languagePatterns String?
+  stylePreferences String?
+  platformBehavior String?
+  notes            String?
+  tags             String?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model VisualPattern {
+  id               String   @id @default(cuid())
+  name             String
+  marketType       String   @default("product")
+  status           String   @default("active")
+
+  patternType      String?
+  summary          String?
+  composition      String?
+  lighting         String?
+  colorPalette     String?
+  typographyStyle  String?
+  mood             String?
+  backgroundStyle  String?
+  productPlacement String?
+  useCase          String?
+  examples         String?
+  tags             String?
+  notes            String?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([name, marketType])
+}
+
+model CopyFormula {
+  id              String   @id @default(cuid())
+  name            String
+  marketType      String   @default("product")
+  status          String   @default("active")
+
+  formulaType     String?
+  structure       String?
+  headlineFormula String?
+  bodyFormula     String?
+  ctaFormula      String?
+  bestUseCases    String?
+  tone            String?
+  examples        String?
+  tags            String?
+  notes           String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([name, marketType])
+}
+
+model OfferAngle {
+  id               String   @id @default(cuid())
+  name             String
+  marketType       String   @default("product")
+  status           String   @default("active")
+
+  angleType        String?
+  summary          String?
+  hookIdeas        String?
+  urgencyMechanics String?
+  bestUseCases     String?
+  examples         String?
+  seasonality      String?
+  tags             String?
+  notes            String?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([name, marketType])
+}
+
+model ResearchNote {
+  id         String   @id @default(cuid())
+  title      String
+  marketType String   @default("product")
+  noteType   String?
+  body       String
+  source     String?
+  tags       String?
+  priority   Int?
+  status     String   @default("active")
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+/// Fundraiser-only creative memory (edited on /memory).
+model CreativeBrain {
+  id                     String   @id @default(cuid())
+  scope                  String   @default("fundraiser")
+  previousWinningPrompts String   @default("")
+  anglesList             String   @default("")
+  additionalInfo         String   @default("")
+
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([scope])
+}

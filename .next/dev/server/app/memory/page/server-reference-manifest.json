@@ -1,0 +1,20 @@
+{
+  "node": {
+    "40b1cb8dd4a94dcf071c16fdb3010a3477e197ee2e": {
+      "workers": {
+        "app/memory/page": {
+          "moduleId": "[project]/.next-internal/server/app/memory/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/memory/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "saveFundraiserCreativeBrain",
+          "filename": "app/memory/actions.ts"
+        }
+      },
+      "layer": {
+        "app/memory/page": "action-browser"
+      },
+      "exportedName": "saveFundraiserCreativeBrain",
+      "filename": "app/memory/actions.ts"
+    }
+  },
+  "edge": {}
+}

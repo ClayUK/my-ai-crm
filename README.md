@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment
+
+- `ANTHROPIC_API_KEY` — required for Claude.
+- **Fundraiser “Generate 5 ads”** (`generateDonationFundraiserBatchFive`): **extended thinking is on by default** (Haiku 4.5). Optional overrides:
+  - `ANTHROPIC_FUNDRAISER_BATCH_THINKING=false` — disable thinking (legacy-style call, `max_tokens` 9000).
+  - `ANTHROPIC_FUNDRAISER_BATCH_MODEL` — e.g. `claude-sonnet-4-5-20250929` for heavier reasoning.
+  - `ANTHROPIC_FUNDRAISER_BATCH_THINKING_BUDGET` — thinking budget in tokens (min `1024`, default `10000`).
+  - `ANTHROPIC_FUNDRAISER_BATCH_MAX_TOKENS` — total output cap (default scales with budget; must exceed thinking budget).
+
 ## Getting Started
 
 First, run the development server:

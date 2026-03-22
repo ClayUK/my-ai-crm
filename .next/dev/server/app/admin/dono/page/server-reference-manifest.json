@@ -1,0 +1,140 @@
+{
+  "node": {
+    "00f901d11fe8f04785cd3c6658565ab2d62ad93e3b": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "app/admin/dono/page.tsx"
+    },
+    "4045ba37d8d236f40f14f4f6e2181c1cde9cedfc6a": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_5",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_5",
+      "filename": "app/admin/dono/page.tsx"
+    },
+    "40462918826704c5f4ea908e01f1471ccb2dd96fb6": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_1",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_1",
+      "filename": "app/admin/dono/page.tsx"
+    },
+    "404637d0f9ac68b88b9d4e40f7d2c0f413f8473289": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_2",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_2",
+      "filename": "app/admin/dono/page.tsx"
+    },
+    "4059095179b8b19dd88034160d83a14c1b5a129ad2": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_6",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_6",
+      "filename": "app/admin/dono/page.tsx"
+    },
+    "406e29c5600dddac356fe1546e7539bc4c1788ede4": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_7",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_7",
+      "filename": "app/admin/dono/page.tsx"
+    },
+    "4099723d8d8a4a5460cef48d73865955c573f90983": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_4",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_4",
+      "filename": "app/admin/dono/page.tsx"
+    },
+    "40ab8e8412f742ec8d593febe05297a7f0ca26d45e": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_8",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_8",
+      "filename": "app/admin/dono/page.tsx"
+    },
+    "40e3d1a762376250616cc203d653347e445520c63f": {
+      "workers": {
+        "app/admin/dono/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/dono/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/admin/dono/page.tsx [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_3",
+          "filename": "app/admin/dono/page.tsx"
+        }
+      },
+      "layer": {
+        "app/admin/dono/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_3",
+      "filename": "app/admin/dono/page.tsx"
+    }
+  },
+  "edge": {}
+}
