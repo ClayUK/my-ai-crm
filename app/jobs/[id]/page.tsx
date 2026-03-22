@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { prisma } from "@/src/lib/prisma";
 import { generateImageWithKie } from "@/src/lib/kie";
 import Link from "next/link";

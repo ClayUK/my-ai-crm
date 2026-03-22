@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import Link from "next/link";
 import { prisma } from "@/src/lib/prisma";
 import { CREATIVE_BRAIN_PRISMA_FIX, FUNDRAISER_BRAIN_SCOPE } from "@/src/lib/creativeBrain";

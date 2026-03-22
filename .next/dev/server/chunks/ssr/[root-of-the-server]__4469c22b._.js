@@ -145,7 +145,9 @@ __turbopack_context__.n(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$m
 
 __turbopack_context__.s([
     "default",
-    ()=>MemoryPage
+    ()=>MemoryPage,
+    "dynamic",
+    ()=>dynamic
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react-jsx-dev-runtime.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.react-server.js [app-rsc] (ecmascript)");
@@ -154,6 +156,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$creativeBrain$
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$swipeBrain$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/swipeBrain.ts [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$memory$2f$creative$2d$brain$2d$form$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/memory/creative-brain-form.tsx [app-rsc] (ecmascript)");
 ;
+const dynamic = "force-dynamic";
 ;
 ;
 ;
@@ -201,7 +204,7 @@ async function MemoryPage() {
                         children: "Creative Brain"
                     }, void 0, false, {
                         fileName: "[project]/app/memory/page.tsx",
-                        lineNumber: 39,
+                        lineNumber: 40,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -213,20 +216,20 @@ async function MemoryPage() {
                         children: "Global fundraiser memory: prompts, angles, and keyed notes used in ad generation and batch runs."
                     }, void 0, false, {
                         fileName: "[project]/app/memory/page.tsx",
-                        lineNumber: 42,
+                        lineNumber: 43,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/memory/page.tsx",
-                lineNumber: 38,
+                lineNumber: 39,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$memory$2f$creative$2d$brain$2d$form$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["CreativeBrainForm"], {
                 initialBrain: brain
             }, void 0, false, {
                 fileName: "[project]/app/memory/page.tsx",
-                lineNumber: 48,
+                lineNumber: 49,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -246,7 +249,7 @@ async function MemoryPage() {
                         children: "Saved swipe bank (fundraiser)"
                     }, void 0, false, {
                         fileName: "[project]/app/memory/page.tsx",
-                        lineNumber: 59,
+                        lineNumber: 60,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -266,7 +269,7 @@ async function MemoryPage() {
                                 children: "Active"
                             }, void 0, false, {
                                 fileName: "[project]/app/memory/page.tsx",
-                                lineNumber: 64,
+                                lineNumber: 65,
                                 columnNumber: 46
                             }, this),
                             " (pulled into batches): ",
@@ -276,7 +279,7 @@ async function MemoryPage() {
                                 children: "Generate 5 ads"
                             }, void 0, false, {
                                 fileName: "[project]/app/memory/page.tsx",
-                                lineNumber: 65,
+                                lineNumber: 66,
                                 columnNumber: 60
                             }, this),
                             " ",
@@ -286,7 +289,7 @@ async function MemoryPage() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/memory/page.tsx",
-                        lineNumber: 62,
+                        lineNumber: 63,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -308,24 +311,24 @@ async function MemoryPage() {
                             children: "Open swipe bank admin"
                         }, void 0, false, {
                             fileName: "[project]/app/memory/page.tsx",
-                            lineNumber: 71,
+                            lineNumber: 72,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/memory/page.tsx",
-                        lineNumber: 70,
+                        lineNumber: 71,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/memory/page.tsx",
-                lineNumber: 50,
+                lineNumber: 51,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/memory/page.tsx",
-        lineNumber: 37,
+        lineNumber: 38,
         columnNumber: 9
     }, this);
 }

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
 import { scrapeUrlToHtml } from "@/src/lib/scrape";
