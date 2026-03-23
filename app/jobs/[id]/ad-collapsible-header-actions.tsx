@@ -2,6 +2,7 @@
 
 import { type CSSProperties } from "react";
 import SaveImageButton from "@/app/components/SaveImageButton";
+import { PendingSubmitButton } from "@/app/components/PendingSubmitButton";
 
 type Props = {
     jobId: string;
@@ -87,17 +88,16 @@ export function AdCollapsibleHeaderActions({
                     <option value="1:1">1:1</option>
                     <option value="9:16">9:16</option>
                 </select>
-                <button
-                    type="submit"
+                <PendingSubmitButton
+                    label="Generate Kie"
+                    pendingLabel="Generating images…"
                     style={{
                         ...btnSm,
                         background: "var(--accent)",
                         color: "#fff",
                         border: "1px solid rgba(124, 58, 237, 0.35)",
                     }}
-                >
-                    Generate Kie
-                </button>
+                />
             </form>
             {hasImage && firstImageDownloadName ? (
                 <SaveImageButton

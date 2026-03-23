@@ -2406,9 +2406,10 @@ export default async function JobDetailPage({
                                         seeds are picked randomly from{" "}
                                         <Link href="/memory">Memory → Creative Brain</Link>.
                                         After generation, the blueprint for that run
-                                        appears under <strong>Ad tabs</strong>. Use{" "}
-                                        <strong>Generate variations</strong> on each ad
-                                        for optional tweaks.
+                                        appears under <strong>Ad tabs</strong>. Under{" "}
+                                        <strong>each</strong> Kie image, use{" "}
+                                        <strong>Variation options</strong> for optional
+                                        tweaks (above Kling-ready).
                                     </p>
 
                                     <form action={generateFundraiserFiveAds}>
@@ -3059,30 +3060,12 @@ export default async function JobDetailPage({
                                             }}
                                         >
                                             Set references and ratio, then run
-                                            Kie.
-                                            {ad.adNumber === 1 ? (
-                                                <>
-                                                    {" "}
-                                                    On <strong>Ad 1</strong>, open{" "}
-                                                    <strong>
-                                                        Variation options →
-                                                        preview → new ad tab
-                                                    </strong>{" "}
-                                                    below to fork copy (preview
-                                                    first, then save tabs).
-                                                </>
-                                            ) : (
-                                                <>
-                                                    {" "}
-                                                    New angles from{" "}
-                                                    <strong>Ad 1</strong>: switch
-                                                    to that tab and use{" "}
-                                                    <strong>
-                                                        Variation options
-                                                    </strong>{" "}
-                                                    under its Kie button.
-                                                </>
-                                            )}{" "}
+                                            Kie. Under{" "}
+                                            <strong>each generated image</strong>{" "}
+                                            for this ad, open{" "}
+                                            <strong>Variation options</strong>{" "}
+                                            (preview, then save new ad tabs), above
+                                            Kling-ready.{" "}
                                             After an image, open{" "}
                                             <strong>
                                                 Refine this ad → Kling-ready
@@ -3253,8 +3236,9 @@ export default async function JobDetailPage({
                                                     </option>
                                                 </select>
                                             </div>
-                                            <button
-                                                type="submit"
+                                            <PendingSubmitButton
+                                                label="Generate This Ad with Kie"
+                                                pendingLabel="Generating images…"
                                                 style={{
                                                     padding: "10px 14px",
                                                     borderRadius: 10,
@@ -3266,21 +3250,8 @@ export default async function JobDetailPage({
                                                     width: "100%",
                                                     fontWeight: 700,
                                                 }}
-                                            >
-                                                Generate This Ad with Kie
-                                            </button>
-                                        </form>
-
-                                        {ad.adNumber === 1 ? (
-                                            <AdVariationPanel
-                                                jobId={job.id}
-                                                adId={ad.id}
-                                                showKlingOption={
-                                                    job.campaignType ===
-                                                    "donation"
-                                                }
                                             />
-                                        ) : null}
+                                        </form>
                                     </div>
 
                                     <div style={{ marginTop: 20 }}>
@@ -3301,71 +3272,141 @@ export default async function JobDetailPage({
                                             </div>
                                         ) : null}
                                         {ad.images.length === 0 ? (
-                                            <div style={{ opacity: 0.85 }}>
-                                                No generated images yet.
+                                            <div
+                                                style={{
+                                                    opacity: 0.85,
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: 10,
+                                                }}
+                                            >
+                                                {ad.status ===
+                                                "generating_images" ? (
+                                                    <>
+                                                        <span
+                                                            className="ss-pending-spinner"
+                                                            style={{
+                                                                width: 18,
+                                                                height: 18,
+                                                                border: "2px solid rgba(148, 163, 184, 0.45)",
+                                                                borderTopColor:
+                                                                    "var(--accent)",
+                                                            }}
+                                                            aria-hidden
+                                                        />
+                                                        <span>
+                                                            Generating images…
+                                                            This can take a
+                                                            minute.
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    <span>
+                                                        No generated images yet.
+                                                    </span>
+                                                )}
                                             </div>
                                         ) : (
                                             <div
                                                 style={{
-                                                    display: "grid",
-                                                    gridTemplateColumns:
-                                                        "repeat(auto-fit, minmax(260px, 320px))",
-                                                    gap: 16,
-                                                    justifyContent: "start",
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    gap: 20,
                                                 }}
                                             >
                                                 {ad.images.map((image) => (
                                                     <div
                                                         key={image.id}
                                                         style={{
-                                                            border:
-                                                                "1px solid var(--border)",
-                                                            padding: 12,
-                                                            borderRadius: 12,
+                                                            display: "flex",
+                                                            flexDirection: "column",
+                                                            gap: 0,
                                                         }}
                                                     >
                                                         <div
                                                             style={{
-                                                                display: "flex",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                                minHeight: 120,
-                                                                padding: 8,
-                                                                borderRadius: 8,
-                                                                background:
-                                                                    "var(--surfaceElevated)",
+                                                                display: "grid",
+                                                                gridTemplateColumns:
+                                                                    "repeat(auto-fit, minmax(260px, 320px))",
+                                                                gap: 16,
+                                                                justifyContent:
+                                                                    "start",
                                                             }}
                                                         >
-                                                            <img
-                                                                src={image.url}
-                                                                alt={`Ad ${ad.adNumber}`}
+                                                            <div
                                                                 style={{
-                                                                    maxWidth:
-                                                                        "min(100%, 280px)",
-                                                                    maxHeight:
-                                                                        "min(52vh, 420px)",
-                                                                    width: "auto",
-                                                                    height: "auto",
-                                                                    objectFit:
-                                                                        "contain",
-                                                                    display:
-                                                                        "block",
+                                                                    border:
+                                                                        "1px solid var(--border)",
+                                                                    padding: 12,
+                                                                    borderRadius: 12,
                                                                 }}
-                                                            />
+                                                            >
+                                                                <div
+                                                                    style={{
+                                                                        display:
+                                                                            "flex",
+                                                                        justifyContent:
+                                                                            "center",
+                                                                        alignItems:
+                                                                            "center",
+                                                                        minHeight: 120,
+                                                                        padding: 8,
+                                                                        borderRadius: 8,
+                                                                        background:
+                                                                            "var(--surfaceElevated)",
+                                                                    }}
+                                                                >
+                                                                    <img
+                                                                        src={
+                                                                            image.url
+                                                                        }
+                                                                        alt={`Ad ${ad.adNumber}`}
+                                                                        style={{
+                                                                            maxWidth:
+                                                                                "min(100%, 280px)",
+                                                                            maxHeight:
+                                                                                "min(52vh, 420px)",
+                                                                            width: "auto",
+                                                                            height: "auto",
+                                                                            objectFit:
+                                                                                "contain",
+                                                                            display:
+                                                                                "block",
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                <SaveImageButton
+                                                                    imageUrl={
+                                                                        image.url
+                                                                    }
+                                                                    downloadName={`SacredStatics-ad-${job.id.slice(0, 8)}-${ad.adNumber}-${image.id.slice(-6)}`}
+                                                                />
+                                                                <div
+                                                                    style={{
+                                                                        marginTop: 8,
+                                                                        fontSize: 12,
+                                                                        wordBreak:
+                                                                            "break-all",
+                                                                        opacity: 0.9,
+                                                                    }}
+                                                                >
+                                                                    {image.url}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <SaveImageButton
-                                                            imageUrl={image.url}
-                                                            downloadName={`SacredStatics-ad-${job.id.slice(0, 8)}-${ad.adNumber}-${image.id.slice(-6)}`}
-                                                        />
                                                         <div
                                                             style={{
-                                                                marginTop: 8,
-                                                                fontSize: 12,
-                                                                wordBreak: "break-all",
-                                                                opacity: 0.9,
+                                                                marginTop: 12,
                                                             }}
                                                         >
-                                                            {image.url}
+                                                            <AdVariationPanel
+                                                                jobId={job.id}
+                                                                adId={ad.id}
+                                                                showKlingOption={
+                                                                    job.campaignType ===
+                                                                    "donation"
+                                                                }
+                                                            />
                                                         </div>
                                                     </div>
                                                 ))}
@@ -3404,12 +3445,11 @@ export default async function JobDetailPage({
                                             >
                                                 After generating with Kie, go
                                                 Kling-ready for video packs. Fork
-                                                new ad tabs from{" "}
-                                                <strong>Ad 1</strong> via{" "}
+                                                new ad tabs via{" "}
                                                 <strong>Variation options</strong>{" "}
-                                                under its Kie button. Save prompt
-                                                edits first if you changed the Kie
-                                                block.
+                                                under any image (above this section).
+                                                Save prompt edits first if you changed
+                                                the Kie block.
                                             </div>
 
                                             {job.campaignType === "donation" ? (
@@ -3446,9 +3486,7 @@ export default async function JobDetailPage({
                                                         <strong>
                                                             Variation options
                                                         </strong>{" "}
-                                                        on the{" "}
-                                                        <strong>Ad 1</strong> tab
-                                                        (under Kie).
+                                                        under any generated image.
                                                     </div>
                                                     <form
                                                         action={makeAdKlingReady}

@@ -612,7 +612,9 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SaveImageButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/SaveImageButton.tsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$PendingSubmitButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/PendingSubmitButton.tsx [app-ssr] (ecmascript)");
 "use client";
+;
 ;
 ;
 function stopProp(e) {
@@ -655,7 +657,7 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                         value: jobId
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                        lineNumber: 61,
+                        lineNumber: 62,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -664,7 +666,7 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                         value: adId
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                        lineNumber: 62,
+                        lineNumber: 63,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -678,7 +680,7 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                         children: "Aspect"
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                        lineNumber: 63,
+                        lineNumber: 64,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -699,7 +701,7 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                                 children: "1:1"
                             }, void 0, false, {
                                 fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                                lineNumber: 87,
+                                lineNumber: 88,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -707,33 +709,33 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                                 children: "9:16"
                             }, void 0, false, {
                                 fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                                lineNumber: 88,
+                                lineNumber: 89,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                        lineNumber: 74,
+                        lineNumber: 75,
                         columnNumber: 17
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        type: "submit",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$PendingSubmitButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PendingSubmitButton"], {
+                        label: "Generate Kie",
+                        pendingLabel: "Generating images…",
                         style: {
                             ...btnSm,
                             background: "var(--accent)",
                             color: "#fff",
                             border: "1px solid rgba(124, 58, 237, 0.35)"
-                        },
-                        children: "Generate Kie"
+                        }
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                        lineNumber: 90,
+                        lineNumber: 91,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                lineNumber: 52,
+                lineNumber: 53,
                 columnNumber: 13
             }, this),
             hasImage && firstImageDownloadName ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SaveImageButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -764,7 +766,7 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
         ]
     }, void 0, true, {
         fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-        lineNumber: 41,
+        lineNumber: 42,
         columnNumber: 9
     }, this);
 }
