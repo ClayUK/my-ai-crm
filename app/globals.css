@@ -37,14 +37,6 @@
 
 /* Always default to the premium dark theme. */
 
-/*
- * UI density: scales the whole app smaller at 100% browser zoom (more “zoomed out”).
- * Lower = smaller UI. (Chrome / Edge / Safari; Firefox supports `zoom` in recent versions.)
- */
-html {
-  zoom: 0.65;
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
