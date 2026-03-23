@@ -3,6 +3,7 @@
 import { useState, useTransition, type CSSProperties } from "react";
 import type { ParsedAd } from "@/src/lib/claude/parseClaudeJson";
 import type { VariationCheckboxFlags } from "@/src/lib/adVariationCore";
+import { PendingSubmitButton } from "@/app/components/PendingSubmitButton";
 import {
     commitVariationAdsAction,
     previewVariationPromptAction,
@@ -20,10 +21,17 @@ export function AdVariationPanel({
     jobId,
     adId,
     showKlingOption,
+    kieAspectOverride,
+    saveKieAspectOverride,
+    showKieAspectControls = true,
 }: {
     jobId: string;
     adId: string;
     showKlingOption: boolean;
+    kieAspectOverride?: string | null;
+    saveKieAspectOverride: (formData: FormData) => Promise<void>;
+    /** When false, hide Kie aspect override (e.g. duplicate panels under other images). */
+    showKieAspectControls?: boolean;
 }) {
     const [instruction, setInstruction] = useState("");
     const [flags, setFlags] = useState<VariationCheckboxFlags>({ ...defaultFlags });
@@ -109,6 +117,89 @@ export function AdVariationPanel({
             >
                 Variation options → preview → new ad tab
             </summary>
+            {showKieAspectControls ? (
+                <form
+                    action={saveKieAspectOverride}
+                    style={{
+                        marginTop: 12,
+                        marginBottom: 14,
+                        padding: 12,
+                        borderRadius: 10,
+                        border: "1px solid var(--borderStrong)",
+                        background: "var(--surfaceElevated)",
+                    }}
+                >
+                    <input type="hidden" name="jobId" value={jobId} />
+                    <input type="hidden" name="adId" value={adId} />
+                    <div
+                        style={{
+                            fontSize: 12,
+                            fontWeight: 800,
+                            marginBottom: 8,
+                        }}
+                    >
+                        Kie aspect (next generation only)
+                    </div>
+                    <div
+                        style={{
+                            fontSize: 11,
+                            opacity: 0.82,
+                            lineHeight: 1.45,
+                            marginBottom: 10,
+                        }}
+                    >
+                        Default: match your prompt (e.g. 9:16 vs 1:1). Set a
+                        fixed ratio here when you want this tab to always hit Kie
+                        in that shape.
+                    </div>
+                    <label style={{ ...labelStyle, marginTop: 0 }}>
+                        Aspect for next Kie run
+                    </label>
+                    <select
+                        name="kieAspectOverride"
+                        defaultValue={kieAspectOverride ?? ""}
+                        style={{
+                            ...inputStyle,
+                            marginTop: 6,
+                            maxWidth: 280,
+                        }}
+                    >
+                        <option value="">From prompt (auto)</option>
+                        <option value="1:1">1:1 / 1080×1080</option>
+                        <option value="9:16">9:16 (vertical)</option>
+                    </select>
+                    <PendingSubmitButton
+                        label="Save aspect choice"
+                        pendingLabel="Saving…"
+                        style={{
+                            marginTop: 12,
+                            padding: "8px 12px",
+                            borderRadius: 10,
+                            border: "1px solid var(--borderStrong)",
+                            background: "var(--accent)",
+                            color: "#fff",
+                            fontWeight: 700,
+                            fontSize: 12,
+                            cursor: "pointer",
+                        }}
+                    />
+                </form>
+            ) : (
+                <div
+                    style={{
+                        marginTop: 12,
+                        marginBottom: 10,
+                        fontSize: 11,
+                        opacity: 0.78,
+                        lineHeight: 1.45,
+                    }}
+                >
+                    <strong>Kie aspect</strong> (1:1 vs 9:16) is set under{" "}
+                    <strong>Variation options</strong> on the{" "}
+                    <strong>first</strong> image in this ad tab.
+                </div>
+            )}
+
             <div
                 style={{
                     marginTop: 12,

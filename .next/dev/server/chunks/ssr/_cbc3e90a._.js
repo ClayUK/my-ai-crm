@@ -99,9 +99,11 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$PendingSubmitButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/PendingSubmitButton.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$jobs$2f5b$id$5d2f$data$3a$3bdf39__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__ = __turbopack_context__.i("[project]/app/jobs/[id]/data:3bdf39 [app-ssr] (ecmascript) <text/javascript>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$jobs$2f5b$id$5d2f$data$3a$993091__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__ = __turbopack_context__.i("[project]/app/jobs/[id]/data:993091 [app-ssr] (ecmascript) <text/javascript>");
 "use client";
+;
 ;
 ;
 ;
@@ -113,7 +115,7 @@ function cloneAds(ads) {
             ...a
         }));
 }
-function AdVariationPanel({ jobId, adId, showKlingOption }) {
+function AdVariationPanel({ jobId, adId, showKlingOption, kieAspectOverride, saveKieAspectOverride, showKieAspectControls = true }) {
     const [instruction, setInstruction] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [flags, setFlags] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         ...defaultFlags
@@ -198,8 +200,177 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                 children: "Variation options → preview → new ad tab"
             }, void 0, false, {
                 fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                lineNumber: 103,
+                lineNumber: 111,
                 columnNumber: 13
+            }, this),
+            showKieAspectControls ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                action: saveKieAspectOverride,
+                style: {
+                    marginTop: 12,
+                    marginBottom: 14,
+                    padding: 12,
+                    borderRadius: 10,
+                    border: "1px solid var(--borderStrong)",
+                    background: "var(--surfaceElevated)"
+                },
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                        type: "hidden",
+                        name: "jobId",
+                        value: jobId
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 132,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                        type: "hidden",
+                        name: "adId",
+                        value: adId
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 133,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        style: {
+                            fontSize: 12,
+                            fontWeight: 800,
+                            marginBottom: 8
+                        },
+                        children: "Kie aspect (next generation only)"
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 134,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        style: {
+                            fontSize: 11,
+                            opacity: 0.82,
+                            lineHeight: 1.45,
+                            marginBottom: 10
+                        },
+                        children: "Default: match your prompt (e.g. 9:16 vs 1:1). Set a fixed ratio here when you want this tab to always hit Kie in that shape."
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 143,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                        style: {
+                            ...labelStyle,
+                            marginTop: 0
+                        },
+                        children: "Aspect for next Kie run"
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 155,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                        name: "kieAspectOverride",
+                        defaultValue: kieAspectOverride ?? "",
+                        style: {
+                            ...inputStyle,
+                            marginTop: 6,
+                            maxWidth: 280
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "",
+                                children: "From prompt (auto)"
+                            }, void 0, false, {
+                                fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                                lineNumber: 167,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "1:1",
+                                children: "1:1 / 1080×1080"
+                            }, void 0, false, {
+                                fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                                lineNumber: 168,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "9:16",
+                                children: "9:16 (vertical)"
+                            }, void 0, false, {
+                                fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                                lineNumber: 169,
+                                columnNumber: 25
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 158,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$PendingSubmitButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PendingSubmitButton"], {
+                        label: "Save aspect choice",
+                        pendingLabel: "Saving…",
+                        style: {
+                            marginTop: 12,
+                            padding: "8px 12px",
+                            borderRadius: 10,
+                            border: "1px solid var(--borderStrong)",
+                            background: "var(--accent)",
+                            color: "#fff",
+                            fontWeight: 700,
+                            fontSize: 12,
+                            cursor: "pointer"
+                        }
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 171,
+                        columnNumber: 21
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                lineNumber: 121,
+                columnNumber: 17
+            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    marginTop: 12,
+                    marginBottom: 10,
+                    fontSize: 11,
+                    opacity: 0.78,
+                    lineHeight: 1.45
+                },
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                        children: "Kie aspect"
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 197,
+                        columnNumber: 21
+                    }, this),
+                    " (1:1 vs 9:16) is set under",
+                    " ",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                        children: "Variation options"
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 198,
+                        columnNumber: 21
+                    }, this),
+                    " on the",
+                    " ",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                        children: "first"
+                    }, void 0, false, {
+                        fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                        lineNumber: 199,
+                        columnNumber: 21
+                    }, this),
+                    " image in this ad tab."
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
+                lineNumber: 188,
+                columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 style: {
@@ -216,7 +387,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                         children: "Generate 5 ads"
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                        lineNumber: 122,
+                        lineNumber: 213,
                         columnNumber: 17
                     }, this),
                     " uses Memory variation keys; this panel is free-text only. Step 2: edit the preview, then",
@@ -225,14 +396,14 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                         children: "save as new ad tab"
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                        lineNumber: 124,
+                        lineNumber: 215,
                         columnNumber: 17
                     }, this),
                     ". Open that tab and run Kie."
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                lineNumber: 112,
+                lineNumber: 203,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -240,7 +411,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                 children: "Optional: what to change"
             }, void 0, false, {
                 fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                lineNumber: 127,
+                lineNumber: 218,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -251,7 +422,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                 style: inputStyle
             }, void 0, false, {
                 fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                lineNumber: 128,
+                lineNumber: 219,
                 columnNumber: 13
             }, this),
             showKlingOption ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -273,14 +444,14 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                 }))
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                        lineNumber: 147,
+                        lineNumber: 238,
                         columnNumber: 21
                     }, this),
                     "Kling-ready pack (KIE still + KLING video strand)"
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                lineNumber: 137,
+                lineNumber: 228,
                 columnNumber: 17
             }, this) : null,
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -301,7 +472,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                 children: pendingPreview ? "Generating preview…" : "Generate variation prompt"
             }, void 0, false, {
                 fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                lineNumber: 161,
+                lineNumber: 252,
                 columnNumber: 13
             }, this),
             error ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -317,7 +488,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                 children: error
             }, void 0, false, {
                 fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                lineNumber: 181,
+                lineNumber: 272,
                 columnNumber: 17
             }, this) : null,
             draftAds && draftAds.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -334,7 +505,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                         children: "Preview — edit before saving"
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                        lineNumber: 198,
+                        lineNumber: 289,
                         columnNumber: 21
                     }, this),
                     draftAds.map((ad, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -358,7 +529,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 219,
+                                    lineNumber: 310,
                                     columnNumber: 33
                                 }, this) : null,
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -366,7 +537,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     children: "Angle"
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 229,
+                                    lineNumber: 320,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -379,7 +550,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 230,
+                                    lineNumber: 321,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -387,7 +558,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     children: "Hook"
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 238,
+                                    lineNumber: 329,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -400,7 +571,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 239,
+                                    lineNumber: 330,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -408,7 +579,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     children: "Headline"
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 247,
+                                    lineNumber: 338,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -421,7 +592,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 248,
+                                    lineNumber: 339,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -429,7 +600,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     children: "Primary text"
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 256,
+                                    lineNumber: 347,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -442,7 +613,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 257,
+                                    lineNumber: 348,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -450,7 +621,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     children: "CTA"
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 265,
+                                    lineNumber: 356,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -463,7 +634,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 266,
+                                    lineNumber: 357,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -471,7 +642,7 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     children: "Visual prompt (Kie)"
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 274,
+                                    lineNumber: 365,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -485,13 +656,13 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                                    lineNumber: 275,
+                                    lineNumber: 366,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, idx, true, {
                             fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                            lineNumber: 208,
+                            lineNumber: 299,
                             columnNumber: 25
                         }, this)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -512,19 +683,19 @@ function AdVariationPanel({ jobId, adId, showKlingOption }) {
                         children: pendingCommit ? "Saving…" : draftAds.length > 1 ? `Save ${draftAds.length} new ad tabs` : "Save as new ad tab"
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                        lineNumber: 289,
+                        lineNumber: 380,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-                lineNumber: 197,
+                lineNumber: 288,
                 columnNumber: 17
             }, this) : null
         ]
     }, void 0, true, {
         fileName: "[project]/app/jobs/[id]/ad-variation-panel.tsx",
-        lineNumber: 94,
+        lineNumber: 102,
         columnNumber: 9
     }, this);
 }
@@ -541,14 +712,39 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 "use client";
 ;
 ;
-function SaveImageButton({ imageUrl, downloadName, compact = false }) {
+function buildFileName(downloadName) {
+    const base = downloadName.replace(/\.(png|jpe?g|webp)$/i, "") || "sacredstatics-ad";
+    return /\.(png|jpe?g|webp)$/i.test(downloadName) ? downloadName : `${base}.png`;
+}
+function SaveImageButton({ imageId, imageUrl, downloadName, compact = false }) {
     const [busy, setBusy] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [lastError, setLastError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     async function handleSave() {
-        if (!imageUrl?.trim()) return;
+        if (!imageUrl?.trim() && !imageId) return;
         setBusy(true);
-        const base = downloadName.replace(/\.(png|jpe?g|webp)$/i, "") || "sacredstatics-ad";
-        const fileName = /\.(png|jpe?g|webp)$/i.test(downloadName) ? downloadName : `${base}.png`;
+        setLastError(null);
+        const fileName = buildFileName(downloadName);
         try {
+            if (imageId?.trim()) {
+                const u = new URL(`/api/ad-images/${encodeURIComponent(imageId)}/download`, window.location.origin);
+                u.searchParams.set("filename", fileName);
+                const res = await fetch(u.toString());
+                if (!res.ok) {
+                    const j = await res.json().catch(()=>null);
+                    throw new Error((j && typeof j === "object" && "error" in j ? String(j.error) : null) || `Download failed (${res.status})`);
+                }
+                const blob = await res.blob();
+                const objectUrl = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = objectUrl;
+                a.download = fileName;
+                a.rel = "noopener";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(objectUrl);
+                return;
+            }
             const res = await fetch(imageUrl, {
                 mode: "cors"
             });
@@ -563,42 +759,67 @@ function SaveImageButton({ imageUrl, downloadName, compact = false }) {
             a.click();
             a.remove();
             URL.revokeObjectURL(objectUrl);
-        } catch  {
-            window.open(imageUrl, "_blank", "noopener,noreferrer");
+        } catch (e) {
+            const msg = e instanceof Error ? e.message : "Could not download image.";
+            setLastError(msg);
         } finally{
             setBusy(false);
         }
     }
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-        type: "button",
-        onClick: handleSave,
-        disabled: busy,
-        style: compact ? {
-            padding: "6px 10px",
-            borderRadius: 8,
-            border: "1px solid var(--borderStrong)",
-            background: "var(--surfaceElevated)",
-            color: "var(--foreground)",
-            cursor: busy ? "wait" : "pointer",
-            fontSize: 12,
-            fontWeight: 700,
-            whiteSpace: "nowrap"
-        } : {
-            marginTop: 10,
-            padding: "8px 14px",
-            borderRadius: 10,
-            border: "1px solid var(--borderStrong)",
-            background: "var(--surfaceElevated)",
-            color: "var(--foreground)",
-            cursor: busy ? "wait" : "pointer",
-            fontSize: 13,
-            fontWeight: 700,
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        style: compact ? undefined : {
             width: "100%"
         },
-        children: busy ? "Saving…" : "Save image"
-    }, void 0, false, {
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                type: "button",
+                onClick: handleSave,
+                disabled: busy,
+                style: compact ? {
+                    padding: "6px 10px",
+                    borderRadius: 8,
+                    border: "1px solid var(--borderStrong)",
+                    background: "var(--surfaceElevated)",
+                    color: "var(--foreground)",
+                    cursor: busy ? "wait" : "pointer",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    whiteSpace: "nowrap"
+                } : {
+                    marginTop: 10,
+                    padding: "8px 14px",
+                    borderRadius: 10,
+                    border: "1px solid var(--borderStrong)",
+                    background: "var(--surfaceElevated)",
+                    color: "var(--foreground)",
+                    cursor: busy ? "wait" : "pointer",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    width: "100%"
+                },
+                children: busy ? "Saving…" : "Save image"
+            }, void 0, false, {
+                fileName: "[project]/app/components/SaveImageButton.tsx",
+                lineNumber: 94,
+                columnNumber: 13
+            }, this),
+            lastError ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    marginTop: 6,
+                    fontSize: 11,
+                    color: "var(--danger)",
+                    lineHeight: 1.35
+                },
+                children: lastError
+            }, void 0, false, {
+                fileName: "[project]/app/components/SaveImageButton.tsx",
+                lineNumber: 128,
+                columnNumber: 17
+            }, this) : null
+        ]
+    }, void 0, true, {
         fileName: "[project]/app/components/SaveImageButton.tsx",
-        lineNumber: 54,
+        lineNumber: 93,
         columnNumber: 9
     }, this);
 }
@@ -629,7 +850,7 @@ const btnSm = {
     border: "1px solid var(--borderStrong)",
     whiteSpace: "nowrap"
 };
-function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generateAdImages, firstImageUrl, firstImageDownloadName }) {
+function AdCollapsibleHeaderActions({ jobId, adId, generateAdImages, firstImageUrl, firstImageId, firstImageDownloadName }) {
     const hasImage = Boolean(firstImageUrl?.trim());
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         onClick: stopProp,
@@ -669,55 +890,6 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                         lineNumber: 63,
                         columnNumber: 17
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                        htmlFor: aspectSelectHeaderId,
-                        style: {
-                            fontSize: 11,
-                            fontWeight: 700,
-                            opacity: 0.85,
-                            margin: 0
-                        },
-                        children: "Aspect"
-                    }, void 0, false, {
-                        fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                        lineNumber: 64,
-                        columnNumber: 17
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
-                        id: aspectSelectHeaderId,
-                        name: "adAspectRatio",
-                        defaultValue: "1:1",
-                        style: {
-                            padding: "5px 8px",
-                            borderRadius: 8,
-                            border: "1px solid var(--border)",
-                            background: "var(--surfaceElevated)",
-                            color: "var(--foreground)",
-                            fontSize: 12
-                        },
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                value: "1:1",
-                                children: "1:1"
-                            }, void 0, false, {
-                                fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                                lineNumber: 88,
-                                columnNumber: 21
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                value: "9:16",
-                                children: "9:16"
-                            }, void 0, false, {
-                                fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                                lineNumber: 89,
-                                columnNumber: 21
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                        lineNumber: 75,
-                        columnNumber: 17
-                    }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$PendingSubmitButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PendingSubmitButton"], {
                         label: "Generate Kie",
                         pendingLabel: "Generating images…",
@@ -729,7 +901,7 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                         }
                     }, void 0, false, {
                         fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                        lineNumber: 91,
+                        lineNumber: 64,
                         columnNumber: 17
                     }, this)
                 ]
@@ -739,12 +911,13 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                 columnNumber: 13
             }, this),
             hasImage && firstImageDownloadName ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SaveImageButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                imageId: firstImageId ?? undefined,
                 imageUrl: firstImageUrl,
                 downloadName: firstImageDownloadName,
                 compact: true
             }, void 0, false, {
                 fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                lineNumber: 103,
+                lineNumber: 76,
                 columnNumber: 17
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 type: "button",
@@ -760,7 +933,7 @@ function AdCollapsibleHeaderActions({ jobId, adId, aspectSelectHeaderId, generat
                 children: "Save image"
             }, void 0, false, {
                 fileName: "[project]/app/jobs/[id]/ad-collapsible-header-actions.tsx",
-                lineNumber: 109,
+                lineNumber: 83,
                 columnNumber: 17
             }, this)
         ]

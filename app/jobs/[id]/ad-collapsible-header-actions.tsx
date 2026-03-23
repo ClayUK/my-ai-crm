@@ -7,10 +7,10 @@ import { PendingSubmitButton } from "@/app/components/PendingSubmitButton";
 type Props = {
     jobId: string;
     adId: string;
-    aspectSelectHeaderId: string;
     generateAdImages: (formData: FormData) => Promise<void>;
     /** First generated image (header Save image); omit if none yet. */
     firstImageUrl?: string | null;
+    firstImageId?: string | null;
     firstImageDownloadName?: string;
 };
 
@@ -31,9 +31,9 @@ const btnSm: CSSProperties = {
 export function AdCollapsibleHeaderActions({
     jobId,
     adId,
-    aspectSelectHeaderId,
     generateAdImages,
     firstImageUrl,
+    firstImageId,
     firstImageDownloadName,
 }: Props) {
     const hasImage = Boolean(firstImageUrl?.trim());
@@ -61,33 +61,6 @@ export function AdCollapsibleHeaderActions({
             >
                 <input type="hidden" name="jobId" value={jobId} />
                 <input type="hidden" name="adId" value={adId} />
-                <label
-                    htmlFor={aspectSelectHeaderId}
-                    style={{
-                        fontSize: 11,
-                        fontWeight: 700,
-                        opacity: 0.85,
-                        margin: 0,
-                    }}
-                >
-                    Aspect
-                </label>
-                <select
-                    id={aspectSelectHeaderId}
-                    name="adAspectRatio"
-                    defaultValue="1:1"
-                    style={{
-                        padding: "5px 8px",
-                        borderRadius: 8,
-                        border: "1px solid var(--border)",
-                        background: "var(--surfaceElevated)",
-                        color: "var(--foreground)",
-                        fontSize: 12,
-                    }}
-                >
-                    <option value="1:1">1:1</option>
-                    <option value="9:16">9:16</option>
-                </select>
                 <PendingSubmitButton
                     label="Generate Kie"
                     pendingLabel="Generating images…"
@@ -101,6 +74,7 @@ export function AdCollapsibleHeaderActions({
             </form>
             {hasImage && firstImageDownloadName ? (
                 <SaveImageButton
+                    imageId={firstImageId ?? undefined}
                     imageUrl={firstImageUrl!}
                     downloadName={firstImageDownloadName}
                     compact

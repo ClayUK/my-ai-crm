@@ -69,6 +69,8 @@ model Ad {
   sourceBlock     String?
   editedPrompt    String?
   kieResult       String?
+  // Optional Kie aspect override set from Variation options; null = infer from prompt.
+  kieAspectOverride String?
   status          String           @default("pending")
   parentAdId      String?
   isWinner        Boolean          @default(false)

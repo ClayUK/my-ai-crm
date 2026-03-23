@@ -45,6 +45,21 @@
       "exportedName": "$$RSC_SERVER_ACTION_3",
       "filename": "app/jobs/[id]/page.tsx"
     },
+    "401984a490f2a1f4851fc80e0c9e05d14319760b83": {
+      "workers": {
+        "app/jobs/[id]/page": {
+          "moduleId": "[project]/.next-internal/server/app/jobs/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/jobs/[id]/page.tsx [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/app/jobs/[id]/reference-asset-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/app/jobs/[id]/variation-preview-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_9",
+          "filename": "app/jobs/[id]/page.tsx"
+        }
+      },
+      "layer": {
+        "app/jobs/[id]/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_9",
+      "filename": "app/jobs/[id]/page.tsx"
+    },
     "4057a32e8da1e760f6aeaf883bb16e83c894436d98": {
       "workers": {
         "app/jobs/[id]/page": {

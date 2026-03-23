@@ -55,6 +55,7 @@ import {
 import { ReferenceImageChip } from "./reference-image-chip";
 import { AdVariationPanel } from "./ad-variation-panel";
 import { AdCollapsibleHeaderActions } from "./ad-collapsible-header-actions";
+import { inferKieAspectRatioFromPrompt } from "@/src/lib/kieAspect";
 import { scrapeUrlToHtml } from "@/src/lib/scrape";
 import {
     persistDonationPageEvalAndAutoStoryEval,
@@ -1016,15 +1017,31 @@ async function makeAdKlingReady(formData: FormData) {
     redirect(`/jobs/${jobId}`);
 }
 
+async function saveKieAspectOverride(formData: FormData) {
+    "use server";
+
+    const jobId = formData.get("jobId")?.toString();
+    const adId = formData.get("adId")?.toString();
+    const raw = formData.get("kieAspectOverride")?.toString()?.trim() ?? "";
+
+    if (!jobId || !adId) throw new Error("Missing jobId or adId");
+
+    const value = raw === "9:16" || raw === "1:1" ? raw : null;
+
+    await prisma.ad.update({
+        where: { id: adId },
+        data: { kieAspectOverride: value },
+    });
+
+    redirect(`/jobs/${jobId}`);
+}
+
 // --- Image generation stage (per ad) ---
 async function generateAdImages(formData: FormData) {
     "use server";
 
     const jobId = formData.get("jobId")?.toString();
     const adId = formData.get("adId")?.toString();
-    const adAspectRatioRaw = formData.get("adAspectRatio")?.toString();
-    const adAspectRatio: "1:1" | "9:16" =
-        adAspectRatioRaw === "9:16" ? "9:16" : "1:1";
 
     if (!jobId || !adId) throw new Error("Missing jobId or adId");
 
@@ -1066,11 +1083,20 @@ async function generateAdImages(formData: FormData) {
         .map((asset) => asset.filePath)
         .filter(Boolean);
 
+    const aspectFromOverride =
+        ad.kieAspectOverride === "9:16" || ad.kieAspectOverride === "1:1"
+            ? ad.kieAspectOverride
+            : null;
+    const aspect: "1:1" | "9:16" =
+        aspectFromOverride ?? inferKieAspectRatioFromPrompt(prompt);
+
     console.log("[generateAdImages]", {
         jobId,
         adId,
         referenceCount: referenceImages.length,
         used: adReferenceAssets.length > 0 ? "ad" : "job_shared",
+        aspect,
+        aspectSource: aspectFromOverride ? "variation_override" : "prompt",
     });
 
     await prisma.ad.update({
@@ -1082,7 +1108,7 @@ async function generateAdImages(formData: FormData) {
         const result = await generateImageWithKie(
             prompt,
             referenceImages,
-            adAspectRatio
+            aspect
         );
         const urls = extractImageUrlsFromResult(result);
 
@@ -2896,10 +2922,12 @@ export default async function JobDetailPage({
                                         <AdCollapsibleHeaderActions
                                             jobId={job.id}
                                             adId={ad.id}
-                                            aspectSelectHeaderId={`aspect-header-${ad.id}`}
                                             generateAdImages={generateAdImages}
                                             firstImageUrl={
                                                 ad.images[0]?.url ?? null
+                                            }
+                                            firstImageId={
+                                                ad.images[0]?.id ?? null
                                             }
                                             firstImageDownloadName={
                                                 ad.images[0]
@@ -2989,8 +3017,8 @@ export default async function JobDetailPage({
                                             }}
                                         >
                                             Workflow: edit &amp; save → references
-                                            &amp; aspect below → generate → refine
-                                            (Kling / variations) → optionally save
+                                            below → generate → refine (Kling /
+                                            variations) → optionally save
                                             this tab to Memory at the bottom.
                                         </div>
                                         <form action={saveAdPromptAndReferences}>
@@ -3048,8 +3076,7 @@ export default async function JobDetailPage({
                                         }}
                                     >
                                         <h4 style={{ margin: "0 0 10px 0" }}>
-                                            Reference images → aspect ratio →
-                                            generate
+                                            Reference images → generate (Kie)
                                         </h4>
                                         <div
                                             style={{
@@ -3059,8 +3086,11 @@ export default async function JobDetailPage({
                                                 lineHeight: 1.45,
                                             }}
                                         >
-                                            Set references and ratio, then run
-                                            Kie. Under{" "}
+                                            Aspect ratio follows your Kie prompt
+                                            (e.g. 9:16 vs 1:1) unless you set an
+                                            override in{" "}
+                                            <strong>Variation options</strong>.
+                                            Set references, then run Kie. Under{" "}
                                             <strong>each generated image</strong>{" "}
                                             for this ad, open{" "}
                                             <strong>Variation options</strong>{" "}
@@ -3202,40 +3232,6 @@ export default async function JobDetailPage({
                                                 name="adId"
                                                 value={ad.id}
                                             />
-                                            <div style={{ marginBottom: 10 }}>
-                                                <label
-                                                    htmlFor={`aspect-body-${ad.id}`}
-                                                    style={{
-                                                        fontSize: 13,
-                                                        fontWeight: 700,
-                                                        opacity: 0.9,
-                                                    }}
-                                                >
-                                                    Aspect Ratio
-                                                </label>
-                                                <br />
-                                                <select
-                                                    id={`aspect-body-${ad.id}`}
-                                                    name="adAspectRatio"
-                                                    defaultValue="1:1"
-                                                    style={{
-                                                        width: 220,
-                                                        padding: 8,
-                                                        marginTop: 8,
-                                                        background:
-                                                            "var(--surfaceElevated)",
-                                                        color: "var(--foreground)",
-                                                        border: "1px solid var(--border)",
-                                                    }}
-                                                >
-                                                    <option value="1:1">
-                                                        1080x1080 (1:1)
-                                                    </option>
-                                                    <option value="9:16">
-                                                        9:16 (TT/Reels)
-                                                    </option>
-                                                </select>
-                                            </div>
                                             <PendingSubmitButton
                                                 label="Generate This Ad with Kie"
                                                 pendingLabel="Generating images…"
@@ -3376,6 +3372,9 @@ export default async function JobDetailPage({
                                                                     />
                                                                 </div>
                                                                 <SaveImageButton
+                                                                    imageId={
+                                                                        image.id
+                                                                    }
                                                                     imageUrl={
                                                                         image.url
                                                                     }
@@ -3405,6 +3404,17 @@ export default async function JobDetailPage({
                                                                 showKlingOption={
                                                                     job.campaignType ===
                                                                     "donation"
+                                                                }
+                                                                kieAspectOverride={
+                                                                    ad.kieAspectOverride
+                                                                }
+                                                                saveKieAspectOverride={
+                                                                    saveKieAspectOverride
+                                                                }
+                                                                showKieAspectControls={
+                                                                    ad.images[0]
+                                                                        ?.id ===
+                                                                    image.id
                                                                 }
                                                             />
                                                         </div>
