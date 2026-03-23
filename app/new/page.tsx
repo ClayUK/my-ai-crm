@@ -104,6 +104,12 @@ async function createCampaign(formData: FormData) {
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
+        console.error(
+            "[createCampaign] Fundraiser analyze failed; saving fallback page eval. jobId=%s error=%s",
+            job.id,
+            message,
+            error
+        );
         const fallbackEval = {
             subjectName: "Fundraiser",
             whatHappened: "Unable to auto-extract from URL. Please provide backstory manually.",

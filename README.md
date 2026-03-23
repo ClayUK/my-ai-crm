@@ -15,6 +15,8 @@ Optional:
 
 At server startup, missing `DATABASE_URL` / `ANTHROPIC_API_KEY` / `KIE_API_KEY` are logged (see `instrumentation.ts`).
 
+If **Analyze Fundraiser** falls back to placeholder copy on the job page, an **“Automatic page analysis hit an error”** panel shows the stored exception (`pageEvaluationError` / `pageEvaluationRetryError`); server logs also record `[createCampaign]` / `[analyzeDonationFundraiser]` on failure.
+
 ### Railway (PostgreSQL)
 
 1. Add a **PostgreSQL** plugin and copy `DATABASE_URL` into the **web** service variables (Railway often appends SSL params automatically).

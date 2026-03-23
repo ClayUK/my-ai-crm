@@ -200,6 +200,12 @@ async function analyzeDonationFundraiser(formData: FormData) {
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
+        console.error(
+            "[analyzeDonationFundraiser] Retry analyze failed; saving fallback. jobId=%s error=%s",
+            jobId,
+            message,
+            error
+        );
         const fallbackEval = {
             subjectName: "Fundraiser",
             whatHappened:
@@ -1256,6 +1262,21 @@ export default async function JobDetailPage({
               formatDonationEvalBlock(donationReferenceEval)
             : "";
 
+    /** Stored when /new or job-page analyze throws (see snapshot merge). */
+    const donationPageAnalysisError =
+        job.campaignType === "donation"
+            ? [
+                  dwSnap?.pageEvaluationError
+                      ? `Analyze on create (/new):\n${String(dwSnap.pageEvaluationError)}`
+                      : "",
+                  dwSnap?.pageEvaluationRetryError
+                      ? `Re-analyze on this page:\n${String(dwSnap.pageEvaluationRetryError)}`
+                      : "",
+              ]
+                  .filter((s) => s.trim().length > 0)
+                  .join("\n\n")
+            : "";
+
     const fundraiserBatchHistRaw =
         job.campaignType === "donation"
             ? await readJobFundraiserBatchHistory(job.id)
@@ -1685,6 +1706,63 @@ export default async function JobDetailPage({
                             <h3 style={{ margin: 0, marginBottom: 12 }}>
                                 Fundraiser: evaluate → create ads (1 or batch of 5)
                             </h3>
+
+                            {donationPageAnalysisError ? (
+                                <div
+                                    style={{
+                                        marginBottom: 14,
+                                        border: "1px solid #b45309",
+                                        borderRadius: 14,
+                                        padding: 12,
+                                        background: "rgba(180, 83, 9, 0.12)",
+                                        color: "var(--foreground)",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            fontWeight: 900,
+                                            marginBottom: 8,
+                                            color: "#ea580c",
+                                        }}
+                                    >
+                                        Automatic page analysis hit an error
+                                        (production / deploy debugging)
+                                    </div>
+                                    <p
+                                        style={{
+                                            margin: "0 0 8px 0",
+                                            fontSize: 12,
+                                            lineHeight: 1.5,
+                                            opacity: 0.9,
+                                        }}
+                                    >
+                                        The message below is the real exception
+                                        from the server (e.g. missing{" "}
+                                        <code>ANTHROPIC_API_KEY</code>, scrape
+                                        timeout, or blocked outbound fetch).
+                                        Fix the cause and use{" "}
+                                        <strong>Analyze Fundraiser</strong> again
+                                        on the home page, or retry below.
+                                    </p>
+                                    <pre
+                                        style={{
+                                            margin: 0,
+                                            padding: 10,
+                                            borderRadius: 10,
+                                            background: "var(--surfaceElevated)",
+                                            border: "1px solid var(--border)",
+                                            fontSize: 12,
+                                            lineHeight: 1.45,
+                                            whiteSpace: "pre-wrap",
+                                            wordBreak: "break-word",
+                                            maxHeight: 280,
+                                            overflow: "auto",
+                                        }}
+                                    >
+                                        {donationPageAnalysisError}
+                                    </pre>
+                                </div>
+                            ) : null}
 
                             {displayBackstoryText ? (
                                 <div

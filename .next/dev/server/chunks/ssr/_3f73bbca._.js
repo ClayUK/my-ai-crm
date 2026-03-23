@@ -2613,6 +2613,8 @@ __turbopack_context__.s([
     ()=>composeBackstoryFromPageEval,
     "getDonationWizardSnapshot",
     ()=>getDonationWizardSnapshot,
+    "isScrapeFailurePlaceholderBackstory",
+    ()=>isScrapeFailurePlaceholderBackstory,
     "mergeDonationWizardSnapshotIntoClaudeOutput",
     ()=>mergeDonationWizardSnapshotIntoClaudeOutput,
     "persistDonationPageEvalAndAutoStoryEval",
@@ -2717,6 +2719,19 @@ function composeBackstoryFromPageEval(pageEval, rawTextFallback) {
         return raw.slice(0, 6000);
     }
     return combined.slice(0, 8000);
+}
+function isScrapeFailurePlaceholderBackstory(text) {
+    const t = text.trim();
+    if (!t) return true;
+    const lower = t.toLowerCase();
+    const hasUnable = lower.includes("unable to auto-extract");
+    const hasUserDetails = lower.includes("user-provided details required");
+    const hasManual = lower.includes("please provide backstory manually") || lower.includes("continue with manual backstory");
+    if (hasUnable && hasUserDetails || hasUnable && hasManual) {
+        // Real copy pasted by the user is usually much longer than the template alone (~200 chars).
+        if (t.length < 360) return true;
+    }
+    return false;
 }
 async function persistDonationPageEvalAndAutoStoryEval(options) {
     const { jobId, pageEval, rawText, filterJobData, jobRow } = options;
