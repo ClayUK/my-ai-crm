@@ -1,0 +1,3 @@
+module.exports=[35112,(a,b,c)=>{"use strict";b.exports=a.r(42602).vendored["react-ssr"].ReactDOM},19485,a=>{"use strict";var b=a.i(87924),c=a.i(35112);function d({label:a,pendingLabel:d="Working…",style:e,disabled:f=!1}){let{pending:g}=(0,c.useFormStatus)();return(0,b.jsx)("button",{type:"submit",disabled:f||g,style:{...e,cursor:g?"wait":f?"not-allowed":e?.cursor??"pointer"},children:g?(0,b.jsxs)("span",{style:{display:"inline-flex",alignItems:"center",justifyContent:"center",gap:10,width:e?.width==="100%"?"100%":void 0},children:[(0,b.jsx)("span",{className:"ss-pending-spinner",style:{width:18,height:18},"aria-hidden":!0}),(0,b.jsx)("span",{children:d})]}):a})}a.s(["PendingSubmitButton",()=>d])}];
+
+//# sourceMappingURL=_0a4d00ce._.js.map

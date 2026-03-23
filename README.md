@@ -31,12 +31,17 @@ If you later use a **pooled** URL with PgBouncer (transaction mode), add a non-p
 
 ### Fundraiser batch (Claude) tuning
 
-**Fundraiser “Generate 5 ads”** (`generateDonationFundraiserBatchFive`): **extended thinking is on by default** (Haiku 4.5). Optional overrides:
+**Fundraiser “Generate 5 ads”** (`generateDonationFundraiserBatchFive`): **extended thinking is on by default**. The default batch model is **Sonnet** (`claude-sonnet-4-5-20250929`) for quality when `ANTHROPIC_FUNDRAISER_BATCH_MODEL` is unset; set `ANTHROPIC_FUNDRAISER_BATCH_MODEL=claude-haiku-4-5` to save cost. Optional overrides:
 
 - `ANTHROPIC_FUNDRAISER_BATCH_THINKING=false` — disable thinking (legacy-style call, `max_tokens` 9000).
-- `ANTHROPIC_FUNDRAISER_BATCH_MODEL` — e.g. `claude-sonnet-4-5-20250929` for heavier reasoning.
+- `ANTHROPIC_FUNDRAISER_BATCH_MODEL` — override the model (e.g. `claude-haiku-4-5` for cheaper runs).
 - `ANTHROPIC_FUNDRAISER_BATCH_THINKING_BUDGET` — thinking budget in tokens (min `1024`, default `10000`).
 - `ANTHROPIC_FUNDRAISER_BATCH_MAX_TOKENS` — total output cap (default scales with budget; must exceed thinking budget).
+
+**Parity / ops**
+
+- Each batch call logs one JSON line prefixed with **`[fundraiserBatch]`**: `promptDigest` (sha256 prefix of full prompt), model, thinking on/off, brain/swipe section sizes, evaluation key counts — use this to compare local vs Railway.
+- **`FUNDRAISER_BATCH_REQUIRE_MEMORY=true`** — blocks **Generate 5 ads** and **fresh-angle** batch until `/memory` has at least one of: angle lines, winning prompts, or `additionalInfo` keys/notes (same definition as the amber UI hint).
 
 ## Getting Started
 

@@ -204,6 +204,29 @@ export function parseKeyedAdditionalInfo(text: string): {
     return { globalLines, keyed };
 }
 
+/**
+ * True when Memory has no angles, no winning-prompt lines, and no substantive
+ * `additionalInfo` (no KEY=value rows and no meaningful global prose).
+ * Used for parity warnings and optional strict batch guard.
+ */
+export function isFundraiserCreativeBrainThin(
+    brain: CreativeBrainRow | null
+): boolean {
+    if (!brain) return true;
+    if (parseAnglesList(brain.anglesList).length > 0) return false;
+    const winners = (brain.previousWinningPrompts || "")
+        .split(/\r?\n/)
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0 && !s.startsWith("#"));
+    if (winners.length > 0) return false;
+    const { keyed, globalLines } = parseKeyedAdditionalInfo(
+        brain.additionalInfo || ""
+    );
+    if (keyed.size > 0) return false;
+    const substantiveGlobal = globalLines.some((l) => l.trim().length >= 12);
+    return !substantiveGlobal;
+}
+
 export function buildBrainPromptSection(
     brain: CreativeBrainRow | null,
     activeKeys: string[]
@@ -337,9 +360,26 @@ export async function getFundraiserCreativeBrain(): Promise<CreativeBrainRow | n
         );
         return null;
     }
-    const row = await db.findUnique({
+    let row = await db.findUnique({
         where: { scope: FUNDRAISER_BRAIN_SCOPE },
     });
+    if (!row) {
+        await db.upsert({
+            where: { scope: FUNDRAISER_BRAIN_SCOPE },
+            create: {
+                scope: FUNDRAISER_BRAIN_SCOPE,
+                previousWinningPrompts: "",
+                anglesList: "",
+                additionalInfo: "",
+            },
+            update: {
+                updatedAt: new Date(),
+            },
+        });
+        row = await db.findUnique({
+            where: { scope: FUNDRAISER_BRAIN_SCOPE },
+        });
+    }
     if (!row) return null;
     return {
         previousWinningPrompts: row.previousWinningPrompts,

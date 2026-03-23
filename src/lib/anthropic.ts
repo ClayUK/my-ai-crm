@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";
 import type { Message } from "@anthropic-ai/sdk/resources/messages/messages";
 import { prisma } from "@/src/lib/prisma";
@@ -108,8 +109,9 @@ function collectAssistantTextBlocks(content: unknown): string {
 
 /**
  * "Generate 5 ads" batch: extended thinking by default (Claude 4.x).
- * Disable: ANTHROPIC_FUNDRAISER_BATCH_THINKING=false
- * Override model: ANTHROPIC_FUNDRAISER_BATCH_MODEL=claude-sonnet-4-5-20250929
+ * Default model is Sonnet for quality when `ANTHROPIC_FUNDRAISER_BATCH_MODEL` is unset.
+ * Set `ANTHROPIC_FUNDRAISER_BATCH_MODEL=claude-haiku-4-5` for cheaper runs.
+ * Disable thinking: ANTHROPIC_FUNDRAISER_BATCH_THINKING=false
  * Override budget (min 1024): ANTHROPIC_FUNDRAISER_BATCH_THINKING_BUDGET=12000
  * Override max output: ANTHROPIC_FUNDRAISER_BATCH_MAX_TOKENS=24000
  */
@@ -131,7 +133,7 @@ function getFundraiserBatchMessageParams(): {
 
     const model =
         process.env.ANTHROPIC_FUNDRAISER_BATCH_MODEL?.trim() ||
-        "claude-haiku-4-5";
+        "claude-sonnet-4-5-20250929";
 
     if (thinkingDisabled) {
         return { model, max_tokens: 9000 };
@@ -1890,12 +1892,32 @@ OUTPUT:
 - Each ad: angle, hook, primaryText, headline, cta, visualPrompt (all strings).
 `.trim();
 
+    if ((input.brainStaticPreamble || "").trim().length < 40) {
+        console.warn(
+            "[generateDonationFundraiserBatchFive] Creative Brain preamble is very short or empty — fill /memory for better prompts."
+        );
+    }
+
+    const batchParamsForThinking = getFundraiserBatchMessageParams();
+    const thinkingOn = !!batchParamsForThinking.thinking;
+    if (!thinkingOn) {
+        console.warn(
+            "[generateDonationFundraiserBatchFive] Extended thinking is OFF (ANTHROPIC_FUNDRAISER_BATCH_THINKING); output quality may drop."
+        );
+    }
+
+    const thinkingLead = thinkingOn
+        ? adCount === 1
+            ? "Extended thinking is enabled: use it to reconcile Creative Brain, swipe bank (if any), evaluations, prior batches, and the slot template before writing output."
+            : "Extended thinking is enabled: use it to reconcile Creative Brain, swipe bank (if any), evaluations, prior batches, and each slot's template before writing output. Aim for sharp, distinct, donation-optimized concepts that convert without repeating hooks or scenes."
+        : adCount === 1
+          ? "Carefully reconcile Creative Brain, swipe bank (if any), evaluations, prior batches, and the slot template before writing output."
+          : "Carefully reconcile Creative Brain, swipe bank (if any), evaluations, prior batches, and each slot's template before writing output. Aim for sharp, distinct, donation-optimized concepts that convert without repeating hooks or scenes.";
+
     const prompt = [
         "Return VALID JSON ONLY. No markdown.",
         "",
-        adCount === 1
-            ? "You have extended thinking enabled: use it to reconcile Creative Brain, swipe bank (if any), evaluations, prior batches, and the slot template before writing output."
-            : "You have extended thinking enabled: use it to reconcile Creative Brain, swipe bank (if any), evaluations, prior batches, and each slot's template before writing output. Aim for sharp, distinct, donation-optimized concepts that convert without repeating hooks or scenes.",
+        thinkingLead,
         "",
         `You are generating EXACTLY ${adCount} distinct DONATION/FUNDRAISER static ad concept${adCount === 1 ? "" : "s"} for Kie in ONE batch.`,
         "",
@@ -1923,6 +1945,13 @@ OUTPUT:
         "",
         (input.swipeBankSection || "").trim(),
         "",
+        "=== GROUNDING RULES (mandatory) ===",
+        "BACKSTORY, PAGE, and REFERENCE evaluation JSON are mandatory factual ground truth. Hooks, headlines, and visualPrompts must reflect specific details from them (injuries, subject, urgency) — not generic charity filler.",
+        "When the FUNDRAISER CREATIVE BRAIN (Memory) section is present and is not empty placeholders, hooks and visual language MUST align with the angle list, winning prompt patterns, and keyed notes.",
+        "Each visualPrompt must be detailed Kie-ready: target a minimum of roughly 400 characters per ad with a concrete scene, lighting, subject appearance, and evaluation-specific facts — never a one-sentence lazy prompt.",
+        "If a SWIPE BANK section is present, use it for structure and style only; never transplant another story, subject, or facts from examples.",
+        "=== END GROUNDING RULES ===",
+        "",
         "PRIOR BATCHES ON THIS JOB (avoid repeating these hooks/angles/templates):",
         input.priorBatchesSummary,
         "",
@@ -1948,7 +1977,49 @@ OUTPUT:
         .filter((line) => line !== "")
         .join("\n");
 
-    const batchParams = getFundraiserBatchMessageParams();
+    const promptDigest = createHash("sha256")
+        .update(prompt, "utf8")
+        .digest("hex")
+        .slice(0, 16);
+    const pageEvalKeys =
+        input.pageEvaluation &&
+        typeof input.pageEvaluation === "object" &&
+        !Array.isArray(input.pageEvaluation)
+            ? Object.keys(input.pageEvaluation as object).length
+            : 0;
+    const backEvalKeys =
+        input.backstoryEvaluation &&
+        typeof input.backstoryEvaluation === "object" &&
+        !Array.isArray(input.backstoryEvaluation)
+            ? Object.keys(input.backstoryEvaluation as object).length
+            : 0;
+    const refEvalKeys =
+        input.referenceEvaluation &&
+        typeof input.referenceEvaluation === "object" &&
+        !Array.isArray(input.referenceEvaluation)
+            ? Object.keys(input.referenceEvaluation as object).length
+            : 0;
+    console.info(
+        "[fundraiserBatch]",
+        JSON.stringify({
+            promptDigest,
+            promptChars: prompt.length,
+            model: batchParamsForThinking.model,
+            thinking: thinkingOn,
+            adCount,
+            brainPreambleChars: (input.brainStaticPreamble || "").trim().length,
+            swipeSectionChars: (input.swipeBankSection || "").trim().length,
+            priorBatchesChars: (input.priorBatchesSummary || "").trim().length,
+            referenceImageCount: input.referenceImageUrls.length,
+            evalKeyCounts: {
+                page: pageEvalKeys,
+                backstory: backEvalKeys,
+                reference: refEvalKeys,
+            },
+        })
+    );
+
+    const batchParams = batchParamsForThinking;
     const response = await messagesCreateLongRequestSafe({
         model: batchParams.model,
         max_tokens: batchParams.max_tokens,

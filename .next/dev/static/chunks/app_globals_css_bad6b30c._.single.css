@@ -500,6 +500,22 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus, selec
   border-color: #ef444473;
 }
 
+@keyframes ss-pending-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ss-pending-spinner {
+  vertical-align: middle;
+  border: 2px solid #ffffff59;
+  border-top-color: #fff;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: .65s linear infinite ss-pending-spin;
+  display: inline-block;
+}
+
 @property --tw-border-style {
   syntax: "*";
   inherits: false;

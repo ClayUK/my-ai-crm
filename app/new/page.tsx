@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic"
+import { PendingSubmitButton } from "@/app/components/PendingSubmitButton";
 import { redirect } from "next/navigation";
 import { prisma } from "@/src/lib/prisma";
 import { scrapeUrlToHtml } from "@/src/lib/scrape";
@@ -182,8 +183,9 @@ export default function NewJobPage() {
                         color: "var(--foreground)",
                     }}
                 />
-                <button
-                    type="submit"
+                <PendingSubmitButton
+                    label="Analyze Fundraiser"
+                    pendingLabel="Analyzing page & calling Claude…"
                     style={{
                         marginTop: 14,
                         padding: "10px 14px",
@@ -191,11 +193,8 @@ export default function NewJobPage() {
                         border: "1px solid rgba(124, 58, 237, 0.35)",
                         background: "var(--accent)",
                         color: "#fff",
-                        cursor: "pointer",
                     }}
-                >
-                    Analyze Fundraiser
-                </button>
+                />
             </form>
         </main>
     );

@@ -1,3 +1,0 @@
-module.exports=[69449,e=>{"use strict";async function s(){let e=[];process.env.DATABASE_URL?.trim()||e.push("DATABASE_URL"),process.env.ANTHROPIC_API_KEY?.trim()||e.push("ANTHROPIC_API_KEY"),process.env.KIE_API_KEY?.trim()||e.push("KIE_API_KEY"),e.length>0&&console.error(`[my-ai-crm] Missing environment variables: ${e.join(", ")}. API and database calls will fail until they are set on your host (e.g. Railway Variables).`)}e.s(["register",()=>s])}];
-
-//# sourceMappingURL=instrumentation_ts_cf8be71b._.js.map

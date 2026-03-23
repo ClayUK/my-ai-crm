@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic"
+import { PendingSubmitButton } from "@/app/components/PendingSubmitButton";
 import { prisma } from "@/src/lib/prisma";
 import { generateImageWithKie } from "@/src/lib/kie";
 import Link from "next/link";
@@ -30,6 +31,7 @@ import {
     planFundraiserBatchFreshAngles,
     planFundraiserBatchOfFive,
     resolveVarKeyPoolFromAdditionalInfo,
+    isFundraiserCreativeBrainThin,
     type FundraiserBatchPlanSlot,
 } from "@/src/lib/creativeBrain";
 import { normalizeRequestedAdCount } from "@/src/lib/claudeAds";
@@ -37,6 +39,10 @@ import {
     readJobFundraiserBatchHistory,
     writeJobFundraiserBatchHistory,
 } from "@/src/lib/jobFundraiserBatchHistory";
+import {
+    FUNDRAISER_BATCH_GUARD_QUERY_KEY,
+    redirectWhenFundraiserBatchRequiresMemory,
+} from "@/src/lib/fundraiserBatchEnv";
 import { getDonationSwipeBatchContext } from "@/src/lib/swipeBrain";
 import {
     appendAdReferenceImages,
@@ -510,6 +516,10 @@ async function generateFundraiserFiveAds(formData: FormData) {
             anglesList: "",
             additionalInfo: "",
         };
+    redirectWhenFundraiserBatchRequiresMemory(
+        jobId,
+        isFundraiserCreativeBrainThin(brainRow)
+    );
     const swipeCtx = await getDonationSwipeBatchContext();
     const varKeyPool = resolveVarKeyPoolFromAdditionalInfo(
         brainRow.additionalInfo
@@ -703,6 +713,11 @@ async function generateFundraiserFiveAdsFreshAngles(formData: FormData) {
             anglesList: "",
             additionalInfo: "",
         };
+
+    redirectWhenFundraiserBatchRequiresMemory(
+        jobId,
+        isFundraiserCreativeBrainThin(brainRow)
+    );
 
     const memoryAngles = parseAnglesList(brainRow.anglesList);
     if (memoryAngles.length === 0) {
@@ -1157,6 +1172,18 @@ export default async function JobDetailPage({
             ? "Add a backstory in the text box (or edit the draft we pre-filled). If the box is empty, click Analyze Fundraiser again so we can pull text from the fundraiser page, then try Evaluate Story."
             : "";
 
+    const batchGuardRaw = sp[FUNDRAISER_BATCH_GUARD_QUERY_KEY];
+    const batchGuardCode =
+        typeof batchGuardRaw === "string"
+            ? batchGuardRaw
+            : Array.isArray(batchGuardRaw)
+              ? batchGuardRaw[0] ?? ""
+              : "";
+    const batchGuardMessage =
+        batchGuardCode === "need_memory"
+            ? "Generate 5 ads was blocked: Memory → Creative Brain is empty (no angles, winning prompts, or style notes). Add content on /memory, or set FUNDRAISER_BATCH_REQUIRE_MEMORY=false on the server if you must run without Memory."
+            : "";
+
     const job = await prisma.job.findUnique({
         where: { id },
         include: {
@@ -1357,6 +1384,10 @@ export default async function JobDetailPage({
         Object.keys(donationBackstoryEval).length > 0 &&
         Object.keys(donationReferenceEval).length > 0;
 
+    const showCreativeBrainThinHint =
+        isDonationBuildStep &&
+        isFundraiserCreativeBrainThin(fundraiserBrainForFresh);
+
     return (
         <main
             style={{
@@ -1453,6 +1484,48 @@ export default async function JobDetailPage({
                         }}
                     >
                         {storyEvalErrorMessage}
+                    </div>
+                    <Link
+                        href={`/jobs/${id}`}
+                        style={{
+                            display: "inline-block",
+                            marginTop: 12,
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: "var(--accent)",
+                        }}
+                    >
+                        Dismiss
+                    </Link>
+                </div>
+            ) : null}
+
+            {batchGuardMessage ? (
+                <div
+                    style={{
+                        marginTop: 16,
+                        padding: 14,
+                        borderRadius: 14,
+                        border: "1px solid #b91c1c",
+                        background: "rgba(185, 28, 28, 0.1)",
+                    }}
+                >
+                    <div
+                        style={{
+                            fontWeight: 900,
+                            marginBottom: 8,
+                            color: "var(--warning, #f87171)",
+                        }}
+                    >
+                        Batch blocked (strict Memory mode)
+                    </div>
+                    <div
+                        style={{
+                            fontSize: 13,
+                            lineHeight: 1.5,
+                        }}
+                    >
+                        {batchGuardMessage}
                     </div>
                     <Link
                         href={`/jobs/${id}`}
@@ -1909,8 +1982,9 @@ export default async function JobDetailPage({
                             {!hasDonationPageEval ? (
                                 <form action={analyzeDonationFundraiser} style={{ marginTop: 12 }}>
                                     <input type="hidden" name="jobId" value={job.id} />
-                                    <button
-                                        type="submit"
+                                    <PendingSubmitButton
+                                        label="Analyze Fundraiser"
+                                        pendingLabel="Analyzing page & calling Claude…"
                                         style={{
                                             width: "100%",
                                             padding: "10px 14px",
@@ -1918,11 +1992,8 @@ export default async function JobDetailPage({
                                             border: "1px solid var(--borderStrong)",
                                             background: "var(--accent)",
                                             color: "#fff",
-                                            cursor: "pointer",
                                         }}
-                                    >
-                                        Analyze Fundraiser
-                                    </button>
+                                    />
                                 </form>
                             ) : null}
 
@@ -1960,8 +2031,9 @@ export default async function JobDetailPage({
                                             color: "var(--foreground)",
                                         }}
                                     />
-                                    <button
-                                        type="submit"
+                                    <PendingSubmitButton
+                                        label="Evaluate Story"
+                                        pendingLabel="Calling Claude…"
                                         style={{
                                             marginTop: 10,
                                             width: "100%",
@@ -1970,11 +2042,8 @@ export default async function JobDetailPage({
                                             border: "1px solid var(--borderStrong)",
                                             background: "var(--accent)",
                                             color: "#fff",
-                                            cursor: "pointer",
                                         }}
-                                    >
-                                        Evaluate Story
-                                    </button>
+                                    />
                                 </form>
                             ) : null}
 
@@ -2020,8 +2089,9 @@ export default async function JobDetailPage({
                                                 color: "var(--foreground)",
                                             }}
                                         />
-                                        <button
-                                            type="submit"
+                                        <PendingSubmitButton
+                                            label="Re-evaluate story"
+                                            pendingLabel="Calling Claude…"
                                             style={{
                                                 marginTop: 8,
                                                 padding: "8px 12px",
@@ -2029,12 +2099,9 @@ export default async function JobDetailPage({
                                                 border: "1px solid var(--borderStrong)",
                                                 background: "var(--accent)",
                                                 color: "#fff",
-                                                cursor: "pointer",
                                                 fontSize: 13,
                                             }}
-                                        >
-                                            Re-evaluate story
-                                        </button>
+                                        />
                                     </form>
                                 </details>
                             ) : null}
@@ -2214,8 +2281,9 @@ export default async function JobDetailPage({
                                                 </div>
                                             )}
                                         </div>
-                                        <button
-                                            type="submit"
+                                        <PendingSubmitButton
+                                            label="Evaluate images"
+                                            pendingLabel="Calling Claude…"
                                             disabled={
                                                 donationSharedReferenceAssets.length ===
                                                 0
@@ -2244,9 +2312,7 @@ export default async function JobDetailPage({
                                                         ? 0.6
                                                         : 1,
                                             }}
-                                        >
-                                            Evaluate images
-                                        </button>
+                                        />
                                     </form>
                                 </div>
                             ) : null}
@@ -2298,6 +2364,34 @@ export default async function JobDetailPage({
                                     >
                                         Generate ads (auto from Creative Brain)
                                     </summary>
+
+                                    {showCreativeBrainThinHint ? (
+                                        <div
+                                            style={{
+                                                marginBottom: 12,
+                                                padding: 12,
+                                                borderRadius: 12,
+                                                border: "1px solid rgba(245, 158, 11, 0.45)",
+                                                background: "rgba(245, 158, 11, 0.1)",
+                                                fontSize: 13,
+                                                lineHeight: 1.5,
+                                            }}
+                                        >
+                                            <strong>Memory is nearly empty.</strong>{" "}
+                                            Add angles, previous winning prompts, and
+                                            template / VAR notes on{" "}
+                                            <Link href="/memory">/memory</Link> so
+                                            batches match your local setup. Server logs
+                                            include a{" "}
+                                            <code>[fundraiserBatch]</code> line with
+                                            prompt digest and context sizes each run.
+                                            Optional: set{" "}
+                                            <code>
+                                                FUNDRAISER_BATCH_REQUIRE_MEMORY=true
+                                            </code>{" "}
+                                            to block batch until Memory is filled.
+                                        </div>
+                                    ) : null}
 
                                     <p
                                         style={{
@@ -2376,8 +2470,9 @@ export default async function JobDetailPage({
                                             )}
                                         </div>
 
-                                        <button
-                                            type="submit"
+                                        <PendingSubmitButton
+                                            label="Generate 5 ads (one Claude call)"
+                                            pendingLabel="Generating ads (Claude)…"
                                             style={{
                                                 marginTop: 14,
                                                 width: "100%",
@@ -2387,12 +2482,9 @@ export default async function JobDetailPage({
                                                     "1px solid var(--borderStrong)",
                                                 background: "var(--accent)",
                                                 color: "#fff",
-                                                cursor: "pointer",
                                                 fontWeight: 700,
                                             }}
-                                        >
-                                            Generate 5 ads (one Claude call)
-                                        </button>
+                                        />
                                     </form>
                                 </details>
                             ) : null}
@@ -3371,8 +3463,9 @@ export default async function JobDetailPage({
                                                             name="adId"
                                                             value={ad.id}
                                                         />
-                                                        <button
-                                                            type="submit"
+                                                        <PendingSubmitButton
+                                                            label="Make this ad Kling ready"
+                                                            pendingLabel="Calling Claude…"
                                                             style={{
                                                                 padding:
                                                                     "10px 14px",
@@ -3382,13 +3475,9 @@ export default async function JobDetailPage({
                                                                 background:
                                                                     "var(--accent)",
                                                                 color: "#fff",
-                                                                cursor: "pointer",
                                                                 fontWeight: 700,
                                                             }}
-                                                        >
-                                                            Make this ad Kling
-                                                            ready
-                                                        </button>
+                                                        />
                                                     </form>
                                                 </div>
                                             ) : null}
@@ -3500,8 +3589,9 @@ export default async function JobDetailPage({
                                     name="jobId"
                                     value={job.id}
                                 />
-                                <button
-                                    type="submit"
+                                <PendingSubmitButton
+                                    label="Generate up to 5 new ads (fresh angles, one Claude call)"
+                                    pendingLabel="Generating ads (Claude)…"
                                     style={{
                                         width: "100%",
                                         padding: "16px 18px",
@@ -3509,14 +3599,10 @@ export default async function JobDetailPage({
                                         border: "1px solid var(--borderStrong)",
                                         background: "var(--accent)",
                                         color: "#fff",
-                                        cursor: "pointer",
                                         fontWeight: 800,
                                         fontSize: 16,
                                     }}
-                                >
-                                    Generate up to 5 new ads (fresh angles, one
-                                    Claude call)
-                                </button>
+                                />
                             </form>
                         </div>
                     ) : null}
