@@ -58,9 +58,10 @@ export async function POST(
     }
 
     const { backstoryEvaluation, referenceEvaluation, pageEvaluation } = resolveDonationEvaluations(job);
-    if (Object.keys(backstoryEvaluation).length === 0 || Object.keys(referenceEvaluation).length === 0) {
-        return NextResponse.json({ error: "Run /analyze first — evaluations incomplete" }, { status: 400 });
+    if (Object.keys(backstoryEvaluation).length === 0) {
+        return NextResponse.json({ error: "Run /analyze first — story evaluation incomplete" }, { status: 400 });
     }
+    // Refs eval is optional — if no reference images were uploaded, we proceed without it
 
     const brainRow = (await getFundraiserCreativeBrain()) ?? {
         previousWinningPrompts: "",
