@@ -52,7 +52,8 @@ export async function GET(
         evaluations: {
             page: Object.keys(pageEvaluation).length > 0,
             story: Object.keys(backstoryEvaluation).length > 0,
-            references: Object.keys(referenceEvaluation).length > 0,
+            // refs are optional — skipped_no_images counts as ok
+            references: Object.keys(referenceEvaluation).length > 0 || !job.donationReferenceEvaluation,
         },
         memory: {
             totalAngles: memAngles.length,
