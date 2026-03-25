@@ -7,57 +7,67 @@ function authOk(req: NextRequest): boolean {
     return req.headers.get("x-crm-secret") === secret;
 }
 
-// ─── TEMPLATE STYLES ────────────────────────────────────────────────────────
-// Each key maps to a donation style template in the CRM batch planner
-
+// ─── TEMPLATE STYLES ─────────────────────────────────────────────────────────
 const ADDITIONAL_INFO = `
-UGC_SNAPCHAT = Snapchat/iPhone vertical video still. Shot on iPhone 13 or older — slightly grainy, warm, imperfect framing. Person filming themselves or a loved one. Authentic, raw, unfiltered. Shaky camera feel. No studio lighting — natural window light or dim indoor. Subject looks directly into camera. Caption-style text overlay in bold white Impact or Helvetica. Feels like a real person's story, not an ad. Emotional but not produced. Shot in a hospital room, home, car, or backyard. NEVER polished. NEVER professional photography.
+UGC_SNAPCHAT = Shot on iPhone, vertical format. Raw, authentic, imperfect. Person filming themselves or a loved one — shaky, emotional, real. Dim indoor light or harsh outdoor. Grainy sensor noise visible. Subject looks directly into camera mid-emotion: tears drying, jaw clenched, eyes red. Caption-style text in white Impact or Helvetica Bold burned into frame — max 6 words, positioned bottom third. Feels like it was posted at 2am out of desperation, not scheduled by a marketing team. Hospital room, car seat, kitchen floor. NEVER clean. NEVER produced. This is a person's real life leaking onto your feed.
 
-NATIVE_ORGANIC = Organic Facebook/Instagram post aesthetic. Shot on a mid-range phone, posted directly to social. Clean but candid — not a selfie, more like a friend took it. Natural light outdoors or soft indoor. Slightly overexposed or real-world colour grading. Subject in everyday clothing. No graphic design elements — just the raw image as if shared directly from camera roll. Caption text as if typed into a Facebook post. Feels like a real community member sharing, not a brand. Warm, relatable, documentary.
+NATIVE_ORGANIC = Organic Facebook or Instagram post. Shot on a mid-range Android or iPhone, posted directly from camera roll — not edited. Slightly overexposed or colour-shifted from phone auto-processing. Subject in everyday clothes, natural setting: backyard, hospital waiting room, doorstep. No graphic overlays. No filters. Feels like a friend or neighbour posted this themselves. If text, it's typed as a caption below the image like a real post, not overlaid on the image. Approachable, community-feel, documentary realness.
 
-HYPER_CLICKBAIT = Maximum emotional impact, hyper-realistic, cinematic. DSLR or Red camera quality. Dramatic lighting — golden hour, harsh shadows, rim light. Subject mid-expression — tears streaming, mouth open in pain or joy, hands reaching. Photojournalism meets Hollywood drama. Deep colour grading — desaturated background, saturated subject. Close crop on face or hands. Text overlay in bold cinematic font — white with black stroke or all caps yellow. Designed to stop the scroll instantly. Think viral news photo meets movie poster.
+HYPER_CLICKBAIT = Maximum cinematic emotional impact. Shot with professional DSLR or RED camera. Dramatic directional lighting — harsh side light, golden hour rim light, or single practical lamp in darkness. Subject mid-extreme-expression: tears streaming, hands gripping bed rail, face buried in hands, or looking to sky. Photojournalism meets Hollywood drama. Deep cinematic colour grade: cool shadows, warm highlights, lifted blacks, crushed darks. Rule of thirds composition. Subject sharp, background beautiful bokeh. Text overlay if used: bold cinematic font, white on dark or yellow all-caps. This is designed to stop a fast thumb mid-scroll.
 
-CREATIVE_CONCEPT = Conceptual art direction. Not a photo — a designed visual narrative. Duotone colour wash, illustrated elements, geometric overlays, split-screen before/after, or symbolic imagery (broken heart, clock, empty bowl, hospital wristband). Bold typography as design element, not just caption. Instagram carousel aesthetic or editorial magazine layout. Could be minimalist (white space, one powerful image) or maximalist (collage, layered textures). Tells the story through visual metaphor. Think Spotify Wrapped meets a non-profit awareness campaign.
+CREATIVE_CONCEPT = Designed visual — not a photo. Choose one of these aesthetics and commit fully:
+SPOTIFY WRAPPED: Bold gradient background (deep purple→hot pink, navy→electric blue, black→gold), large bold stat centred ("47 days in hospital", "1 surgery away from coming home", "$8,400 standing between her and treatment"), clean sans-serif, minimalist. Feels data-driven and shareable.
+VET BILL / HOSPITAL BILL: Realistic-looking printed bill or receipt aesthetic. Itemised charges. Total at bottom circled in red pen. Handwritten note: "We can't pay this." Feels viscerally real and financially triggering.
+NOTES APP: iPhone Notes screenshot. Plain white background, system font. Reads like a private note someone screenshotted. "Day 34. She asked me if she was going to die. I didn't know what to say."
+MISSING POSTER / FLYER ON POLE: Weathered paper texture, staple holes, slightly crooked. Photo of subject. Bold header. Torn tabs at bottom with donation link. Feels urgent, grassroots, human.
+PAPER SIGN: Handwritten cardboard sign held by someone. Sharpie on cardboard. Raw lettering. "Please help us save [name]." Feels like a street-level cry for help.
 
-ILLUSTRATED = Digital illustration or stylised art. Painterly, watercolour, or bold graphic novel style. Subject rendered as illustration — warm colour palette, expressive linework. Could be storyboard-style panels showing timeline of events. Emotional but approachable — designed for people who scroll past photos but stop for art. Include subtle texture overlays. Caption integrated into illustration as handwritten or brushstroke text. Think Children's book meets campaign poster meets Instagram infographic.
+ILLUSTRATED = Digital illustration or stylised art. Choose one aesthetic and execute fully:
+STORYBOARD PANELS: 3-4 panels in comic/graphic novel style. Panel 1: happy before moment. Panel 2: the diagnosis or accident day. Panel 3: current struggle. Panel 4: what your donation makes possible. Warm muted palette, expressive linework, short caption per panel. Tells the entire arc in one image.
+WATERCOLOUR PORTRAIT: Painterly portrait of subject, warm loose brushstrokes, emotional eyes as focal point. Minimal text integrated as brushstroke lettering. Feels like commissioned art for someone who matters.
+INFOGRAPHIC ILLUSTRATION: Clean editorial illustration style — think New Yorker meets GoFundMe. Facts and figures woven into illustrated scene. Approachable for people who scroll past photos.
 
-KLING_VIDEO = Hyper-cinematic still optimised for video animation. Frozen motion — tears mid-fall, hair blowing, hand reaching toward camera. Subject in sharp focus, background motion-blurred. Dramatic depth of field. Colour grade: teal shadows, warm highlights. Feels like a frame from a high-budget documentary or short film. Everything in the frame should suggest movement about to happen. Designed so Kling AI can animate naturally.
+KLING_VIDEO = Frozen-motion cinematic still. Frame designed to animate: tears mid-fall, breath visible in cold air, hand reaching toward camera, curtain mid-billow. Subject in sharp focus, background in motion blur. Dramatic depth of field. Colour grade: teal-orange split. Feels like a frame ripped from a documentary short film. Every element suggests movement about to happen.
 
 # VARIATION MODIFIERS
-VAR_HIGHER_AGGRESSION = Push the emotional intensity to maximum. Use the most devastating detail from the backstory. Lead with pain before hope. The hook should feel like a gut punch. Urgency language throughout — "right now", "today", "before it's too late". Imagery should show the worst moment, not the best.
+VAR_HIGHER_AGGRESSION = Maximum emotional intensity. Lead with the single most devastating detail. No softening. Imagery: worst moment, not the best. Hook language: gut punch first, hope second. "She was supposed to graduate this year." "He hasn't held his daughter in 3 months." Urgency baked into every word.
 
-VAR_LOWER_AGGRESSION = Warm, gentle, hopeful tone. Lead with love and community, not pain. Soft language — "together we can", "every little helps", "a small act of kindness". Imagery should show connection, warmth, human touch. Designed for donors who respond to positivity rather than guilt.
+VAR_LOWER_AGGRESSION = Warm, hopeful, community-focused. Lead with love and connection, not pain. "A community showing up." "Small kindnesses adding up." Imagery: human connection, gentle touch, soft light. For donors who respond to warmth not guilt.
 
-VAR_ADD_TEXT = Include bold text overlay on the image. Hook as headline text — short, punchy, 5 words max. Second line with donation ask. White text with drop shadow or dark background strip. Text should be readable at thumbnail size. Use Impact, Helvetica Bold, or Oswald font style.
+VAR_ADD_TEXT = Bold text overlay burned into image. Hook as headline — 5 words max, punchy. White with drop shadow or on dark strip. Second line donation ask. Readable at thumbnail size on a phone. Font: Impact, Helvetica Bold, or Oswald.
 
-VAR_NO_TEXT = Pure image, no text overlay. Let the visual do all the work. Maximum emotional power through composition alone. Image must communicate the story without any words.
+VAR_NO_TEXT = Pure image. No overlays. No text. The visual carries everything. Maximum emotional power through composition, expression, and light alone.
 
-VAR_STRONGER_CTA = End with unmissable call to action. "Donate now — link in bio", "Tap to help", "Every dollar counts — give today", "Don't scroll past". CTA should feel urgent and direct, not soft.
+VAR_STRONGER_CTA = Unmissable call to action integrated into visual. "Donate now — link in bio", "Tap to help — every dollar counts", "Don't scroll past." CTA feels urgent and direct.
 
-VAR_HIGHER_QUALITY = Elevate production quality. Perfect exposure, professional colour grade, precise composition following rule of thirds. Subject sharp, background beautifully bokeh'd. Feels like it was shot by a professional photographer for a major charity campaign.
+VAR_HIGHER_QUALITY = Elevate every technical element. Perfect exposure. Professional colour grade. Precise rule-of-thirds composition. Subject tack-sharp. Background melting into beautiful bokeh. Feels like it was shot for a major charity campaign by a professional photographer.
 
-VAR_BEFORE_AFTER = Split composition showing contrast. Left/top: the before (healthy, happy, normal life). Right/bottom: the after (current situation, difficulty, need). Clear visual transition. Powerful without needing words. Works as a swipe carousel or single split image.
+VAR_BEFORE_AFTER = Split composition. Left or top: the before (vibrant, healthy, normal life, full of colour). Right or bottom: the after (current reality — stark, clinical, difficult). Visual weight heavy on the after side. No text needed — the contrast says everything.
 
-VAR_SPOTIFY_WRAPPED = Spotify Wrapped / Year in Review aesthetic. Bold gradient background (deep purple to hot pink, or navy to electric blue). Large bold stat in centre ("47 days in hospital", "$12,400 needed", "1 surgery away from recovery"). Clean sans-serif typography. Feels data-driven and shareable. Modern, Gen-Z aesthetic. Designed to go viral through shareability not sadness.
+VAR_SPOTIFY_WRAPPED = Full Spotify Wrapped aesthetic. Bold gradient (purple→pink or navy→electric blue). Large centred stat. Clean sans-serif typography. Feels like a data card gone viral. Shareable by people who wouldn't normally share a charity post.
 
-VAR_STORYBOARD = Comic/storyboard panel layout. 3-4 panels telling the timeline: Panel 1 (before/normal life) → Panel 2 (the moment/diagnosis) → Panel 3 (current struggle) → Panel 4 (what your donation enables). Each panel has a caption. Illustrated or photo + graphic hybrid. Tells the whole story in one scroll-stopping image.
+VAR_STORYBOARD = 3-4 panel comic/storyboard layout. Timeline: normal life → crisis moment → current struggle → what donation enables. Each panel captioned. Illustrated or photo+graphic hybrid. Tells the whole story in one scroll-stopping image.
 
-VAR_NEWS_HEADLINE = Breaking news / local news aesthetic. Ticker bar at bottom with headline. Network news lower-third graphic. "DEVELOPING STORY" or "COMMUNITY RALLIES FOR..." header. Makes the situation feel urgent and newsworthy. Journalistic credibility.
+VAR_NEWS_HEADLINE = Breaking news / local news broadcast aesthetic. Subject photo with news lower-third graphic. Ticker tape at bottom. "COMMUNITY RALLIES FOR..." or "LOCAL FAMILY NEEDS YOUR HELP" header. Journalistic credibility makes it feel urgent and newsworthy.
 
-VAR_PHONE_NOTES = iPhone Notes app or text message screenshot aesthetic. Plain white background, black system font. Reads like a private note or text someone screenshotted and posted. Deeply intimate and authentic. The most raw, undesigned format possible — which makes it feel the most real.
+VAR_PHONE_NOTES = iPhone Notes or iMessage screenshot. Plain white background, system font, no design. Reads like a private note or text thread. The most raw, intimate format possible. "Day 47. The vet says she won't make it past Friday without surgery. We've tried everything."
+
+VAR_VET_BILL = Realistic-looking vet invoice or hospital bill. Itemised line items. Total circled in red pen. Handwritten annotation. Triggers the financial reality viscerally. Works for both animal and human campaigns.
+
+VAR_MISSING_POSTER = Weathered paper flyer / missing person poster aesthetic. Staple holes, slight angle. Bold header text. Photo of subject. Torn pull-tabs at bottom. Feels grassroots, urgent, human. Like it was printed at a library and stapled to every pole in town.
 `.trim();
 
 const WINNING_PROMPTS = `
-Hyper-realistic close-up of a weathered hand holding a hospital wristband, golden hour light streaming through a window, photojournalism quality, tears visible on cheek in soft background blur, Canon 5D feel
-Split-frame iPhone screenshot: left panel shows a happy family photo, right panel shows the same location now empty/sterile, no filter, grainy, raw
-Spotify Wrapped style graphic: deep purple gradient, large white bold stat "62 days fighting" centred, clean modern typography, subtle heartbeat line graphic underneath
-Storyboard panel: top-left happy moment, top-right the diagnosis day, bottom-left hospital bed, bottom-right donation link — graphic novel illustration style, warm muted palette
-Documentary photography: parent slumped in hospital waiting room chair, institutional lighting, 35mm film grain, honest and unposed, deeply human
-iPhone selfie style vertical video still: person looking directly into camera, eyes red from crying, dim bathroom lighting, caption overlay "I didn't think I'd have to ask for help but here we are"
-Cinematic close-up: child's hand in adult's hand on hospital bed rail, depth of field blur on background medical equipment, golden hour through blinds, colour grade cool shadows warm highlights
-Notes app screenshot aesthetic: plain white background, typed message "Day 47. The doctors say she's stable. We still owe $8,400. I don't know what to do."
-Before/after split: vibrant active lifestyle photo on left, stark white hospital room on right, visual weight heavy on right side, no text needed
-News lower-third graphic style: photo of subject with "COMMUNITY FUNDRAISER" ticker, journalistic treatment, makes it feel urgent and newsworthy
+Hyper-realistic close-up of weathered hands holding a crumpled vet bill, red pen circle around the total, tears blurred in background, golden hour through a car window, Canon 5D photojournalism quality
+iPhone Notes screenshot aesthetic: plain white, system font, dark text reading "Day 34. She asked me if she was going to die. I didn't know what to say." — nothing else in frame
+Spotify Wrapped style: deep navy to electric blue gradient, large bold white stat centred, clean Helvetica, subtle medical cross icon, feels viral and data-driven
+Storyboard 4-panel illustration: warm sunset normal life → hospital corridor harsh light → empty pet bed → family reunited, graphic novel linework, muted warm palette
+Cinematic frozen motion: single tear mid-fall from closed eye, rim light from hospital window, teal-orange grade, feels like a documentary film frame, 85mm portrait lens
+Missing poster aesthetic: weathered cream paper, staple holes top corners, candid subject photo, bold black header, handwritten donation URL on torn tab at bottom
+Hospital bill closeup: printed itemised invoice, red pen circle around $12,400 total, sticky note "insurance denied" attached, raw financial reality, no people needed
+Handwritten cardboard sign held at chest: thick black sharpie lettering "Please help us save Bella", background blurred street scene, authentic desperation
+Split frame before/after: vibrant outdoor adventure photo left, stark white hospital room right, same subject, same location impossible, colour drains left to right
+iMessage thread screenshot: blue bubble "The surgery is tomorrow. We're still $3,000 short." Grey bubble "I'm so sorry. What can we do?" Blue bubble "Share this if you can."
 `.trim();
 
 export async function POST(req: NextRequest) {
@@ -69,36 +79,24 @@ export async function POST(req: NextRequest) {
     if (!db) return NextResponse.json({ error: "creativeBrain not available" }, { status: 500 });
 
     const existing = await db.findUnique({ where: { scope: "fundraiser" } });
+    const existingPrompts = existing?.previousWinningPrompts?.trim() || "";
+    const mergedPrompts = existingPrompts ? `${existingPrompts}\n${WINNING_PROMPTS}` : WINNING_PROMPTS;
 
     if (existing) {
-        // Merge winning prompts
-        const existingPrompts = (existing.previousWinningPrompts || "").trim();
-        const mergedPrompts = existingPrompts
-            ? `${existingPrompts}\n${WINNING_PROMPTS}`
-            : WINNING_PROMPTS;
-
         await db.update({
             where: { scope: "fundraiser" },
-            data: {
-                additionalInfo: ADDITIONAL_INFO,
-                previousWinningPrompts: mergedPrompts,
-            },
+            data: { additionalInfo: ADDITIONAL_INFO, previousWinningPrompts: mergedPrompts },
         });
     } else {
         await db.create({
-            data: {
-                scope: "fundraiser",
-                additionalInfo: ADDITIONAL_INFO,
-                previousWinningPrompts: WINNING_PROMPTS,
-                anglesList: "",
-            },
+            data: { scope: "fundraiser", additionalInfo: ADDITIONAL_INFO, previousWinningPrompts: mergedPrompts, anglesList: "" },
         });
     }
 
     return NextResponse.json({
         ok: true,
-        templates: ["UGC_SNAPCHAT", "NATIVE_ORGANIC", "HYPER_CLICKBAIT", "CREATIVE_CONCEPT", "ILLUSTRATED", "KLING_VIDEO"],
-        varModifiers: ["VAR_HIGHER_AGGRESSION", "VAR_LOWER_AGGRESSION", "VAR_ADD_TEXT", "VAR_NO_TEXT", "VAR_STRONGER_CTA", "VAR_HIGHER_QUALITY", "VAR_BEFORE_AFTER", "VAR_SPOTIFY_WRAPPED", "VAR_STORYBOARD", "VAR_NEWS_HEADLINE", "VAR_PHONE_NOTES"],
-        winningPrompts: 10,
+        templates: 6,
+        varModifiers: 13,
+        winningPromptsAdded: 10,
     });
 }
