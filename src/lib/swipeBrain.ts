@@ -88,9 +88,15 @@ export async function getDonationSwipeBatchContext(): Promise<DonationSwipeBatch
     });
 
     const formattedSection = `
-=== SWIPE BANK (saved winning / reference ads — use for STRUCTURE, pacing, lighting vocabulary, block style) ===
-These are from your swipe library (other campaigns). Do NOT copy their subject, names, or specific story beats.
-Ground every output in THIS job's EVALUATIONS and campaign inputs above. Adapt patterns only.
+=== SWIPE BANK (proven winners — extract PATTERNS only, never copy) ===
+These ads have performed well. Study WHY they work — the emotional structure, visual approach, pacing, hook mechanics.
+RULES:
+- DO NOT copy hooks, headlines, or copy verbatim — every ad must be original
+- DO NOT use the same subject, names, or story details
+- DO extract: emotional rhythm, visual format choices, urgency mechanics, structural patterns
+- Each ad you write must feel DIFFERENT from every other ad in this batch AND from these examples
+- If a swipe uses a "vet bill" format, you can use a DIFFERENT designed format (notes app, missing poster, etc.)
+Ground every output in THIS job's EVALUATIONS and campaign inputs. Use swipes for creative inspiration only.
 
 ${blocks.join("\n\n---\n\n")}
 
