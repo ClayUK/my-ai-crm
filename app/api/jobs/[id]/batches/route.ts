@@ -124,6 +124,7 @@ export async function POST(
         angleLine: p.angleLine,
         varKeys: [...p.varKeys],
         winningPromptSeed: winningSeeds[i] || undefined,
+        aspectRatio: p.aspectRatio,
     }));
 
     const priorBatchesSummary = formatBatchHistoryForPrompt(histParsed);

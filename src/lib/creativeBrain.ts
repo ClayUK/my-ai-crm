@@ -641,6 +641,7 @@ export type FundraiserBatchPlanSlot = {
     angleLine: string;
     varKeys: string[];
     winningPromptSeed?: string;
+    aspectRatio?: "9:16" | "1:1";
 };
 
 export type FundraiserBatchHistory = {
