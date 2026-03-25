@@ -177,10 +177,11 @@ export async function POST(
     });
     let nextAdNumber = (maxAdNumber?.adNumber ?? 0) + 1;
 
-    const createdAds: Array<{ id: string; adNumber: number; angle: string; hook: string; visualPrompt: string }> = [];
+    const createdAds: Array<{ id: string; adNumber: number; angle: string; hook: string; visualPrompt: string; aspectRatio: string }> = [];
 
     for (let i = 0; i < slotCount; i++) {
         const num = nextAdNumber++;
+        const aspectRatio = plans[i]?.aspectRatio || "9:16";
         const ad = await prisma.ad.create({
             data: {
                 jobId,
@@ -189,6 +190,7 @@ export async function POST(
                 sourceBlock: JSON.stringify(parsed.ads[i], null, 2),
                 editedPrompt: String(parsed.ads[i]!.visualPrompt || "").trim(),
                 status: "ready",
+                kieAspectOverride: aspectRatio,
             },
         });
         createdAds.push({
@@ -197,6 +199,7 @@ export async function POST(
             angle: String(parsed.ads[i]!.angle || ""),
             hook: String(parsed.ads[i]!.hook || ""),
             visualPrompt: String(parsed.ads[i]!.visualPrompt || "").slice(0, 200),
+            aspectRatio,
         });
     }
 

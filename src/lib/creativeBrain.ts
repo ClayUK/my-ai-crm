@@ -423,7 +423,23 @@ export type BatchAdPlan = {
     varKeys: string[];
     /** Combined keys for buildBrainPromptSection */
     activeBrainKeys: string[];
+    /** Aspect ratio for Kie image generation: 70% 9:16, 30% 1:1 */
+    aspectRatio: "9:16" | "1:1";
 };
+
+/**
+ * Assign aspect ratios to a batch of slots at 70% 9:16 / 30% 1:1.
+ * For 5 slots: 3-4 get 9:16, 1-2 get 1:1.
+ */
+function assignAspectRatios(slotCount: number, random: () => number): Array<"9:16" | "1:1"> {
+    const nVertical = Math.round(slotCount * 0.7);
+    const ratios: Array<"9:16" | "1:1"> = [
+        ...Array(nVertical).fill("9:16"),
+        ...Array(slotCount - nVertical).fill("1:1"),
+    ];
+    shuffleInPlace(ratios, random);
+    return ratios;
+}
 
 function shuffleInPlace<T>(arr: T[], random: () => number) {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -535,6 +551,7 @@ export function planFundraiserBatchFreshAngles(
         baseVarPool = [...VAR_BRAIN_KEYS];
     }
 
+    const aspectRatios = assignAspectRatios(slotCount, random);
     const plans: BatchAdPlan[] = [];
     for (let i = 0; i < slotCount; i++) {
         const styleTemplateId = templateDeck[i]!;
@@ -554,6 +571,7 @@ export function planFundraiserBatchFreshAngles(
             angleLine,
             varKeys,
             activeBrainKeys,
+            aspectRatio: aspectRatios[i]!,
         });
     }
 
@@ -586,6 +604,7 @@ export function planFundraiserBatchOfFive(
         baseVarPool = [...VAR_BRAIN_KEYS];
     }
 
+    const aspectRatios = assignAspectRatios(5, random);
     const plans: BatchAdPlan[] = [];
     for (let i = 0; i < 5; i++) {
         const styleTemplateId = deck[i % deck.length]!;
@@ -608,6 +627,7 @@ export function planFundraiserBatchOfFive(
             angleLine,
             varKeys,
             activeBrainKeys,
+            aspectRatio: aspectRatios[i]!,
         });
     }
 
