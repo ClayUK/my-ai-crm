@@ -1950,6 +1950,8 @@ OUTPUT:
         "When the FUNDRAISER CREATIVE BRAIN (Memory) section is present and is not empty placeholders, hooks and visual language MUST align with the angle list, winning prompt patterns, and keyed notes.",
         "Each visualPrompt must be detailed Kie-ready: target a minimum of roughly 400 characters per ad with a concrete scene, lighting, subject appearance, and evaluation-specific facts — never a one-sentence lazy prompt.",
         "If a SWIPE BANK section is present, use it for structure and style only; never transplant another story, subject, or facts from examples.",
+        `CHARACTER IN EVERY AD (NON-NEGOTIABLE): Every single visualPrompt MUST feature the actual subject (${input.subjectName}) as the primary visible element in BLOCK 1. No abstract scenes, no empty environments without the subject. The subject must be present, visible, and identifiable. If reference images are provided, use them as the primary likeness — do not substitute a generic character.`,
+        "NO GENERIC ADS: Hooks, headlines, and copy must use specific details from THIS campaign — the subject's actual name, specific injuries, specific situation. Replace any generic phrasing like 'this animal' or 'this person' with the actual name. Every ad must feel written for this specific subject only.",
         "=== END GROUNDING RULES ===",
         "",
         "PRIOR BATCHES ON THIS JOB (avoid repeating these hooks/angles/templates):",
